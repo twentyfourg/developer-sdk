@@ -47,6 +47,8 @@ npx @twentyfourg-express-sdk/model-data-generator
       - 'integer' types
       - 'float', 'double', 'decimal'
 
+- References to other tables
+
 - Field Names:
 
   - 'firstname'
@@ -103,13 +105,7 @@ npx @twentyfourg-express-sdk/model-data-generator
 
 ## Testing
 
-- Run `docker compose up` in shell 1
-- Change `READER_SQL_HOST` and `WRITER_SQL_HOST` values to localhost
-- Run `npm run local` in shell 2
-- Navigate to `model-data-generator/src/index.js`
-  - comment out production line for currentModel variable
-  - comment in test line for currentModel variable
-- Run `npm test` in shell 3
+- `npm test`
 
 ### Credits
 
