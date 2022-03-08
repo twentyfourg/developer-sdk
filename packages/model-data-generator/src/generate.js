@@ -47,6 +47,7 @@ module.exports = async (modelPath, modelFiles) => {
         dummyData[tableName].push(modelObject);
       }
     }
+
     // only loop through unique errors and log them out
     [...new Set(referenceErrors)].forEach((error) => console.error(error));
 
