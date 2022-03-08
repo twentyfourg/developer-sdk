@@ -22,14 +22,29 @@ module.exports.run = async () => {
   }
 
   const files = fs.readdirSync(modelPath).filter((name) => name.includes('.model.js'));
+
   if (!files.length) {
     console.log(`No .model.js files found in ${modelPath}`);
     process.exit();
   }
 
+  let filteredFiles;
+  if (files.length > 5) {
+    const fileFilter = await new StringPrompt({
+      message: 'Filter for model names including: ',
+      initial: null,
+      hint: 'If there are over 10 files, consider filtering by name. If no filter is desired, press Enter.',
+    }).run();
+    filteredFiles = files.filter((file) => file.toLowerCase().includes(fileFilter.toLowerCase()));
+    if (filteredFiles.length < 1) {
+      console.log('No results for specified filter.');
+    }
+  }
+
   const models = await new MultiSelect({
     message: 'What model(s) would you like to populate?',
-    choices: files,
+    sort: true,
+    choices: filteredFiles.length >= 1 ? filteredFiles : files,
   }).run();
 
   for (let i = 0; i < models.length; i++) {

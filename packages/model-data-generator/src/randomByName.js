@@ -1,5 +1,6 @@
 const Chance = require('chance');
 const bcrypt = require('bcrypt');
+const { nanoid } = require('nanoid');
 
 const chance = new Chance();
 const randomEven = require('./util/randomEven');
@@ -34,6 +35,16 @@ const randomByName = async (modelObj, DTO, uniqueObj) => {
           }
         } else {
           modelObj[current] = chance.url();
+        }
+      } else if (current.toLowerCase().includes('email')) {
+        if (Object.keys(DTO[current]) && DTO[current].allowNull) {
+          if (randomEven()) {
+            modelObj[current] = '';
+          } else {
+            modelObj[current] = `${nanoid(5)}@24g.com`;
+          }
+        } else {
+          modelObj[current] = `${nanoid(5)}@24g.com`;
         }
       } else {
         switch (current.toLowerCase()) {

@@ -14,10 +14,13 @@ const unique = (DTO, uniqueObj, howMany) => {
         uniqueObj[fieldName] = [];
       }
       // email
-      if (uniqueObj.email && uniqueObj.email.length === 0) {
-        uniqueObj.email = [];
+      if (
+        fieldName.toLowerCase().includes('email') &&
+        uniqueObj[fieldName] &&
+        uniqueObj[fieldName].length === 0
+      ) {
         for (let i = 0; i <= howMany * 2; i++) {
-          uniqueObj.email.push(`${nanoid(5)}@24g.com`);
+          uniqueObj[fieldName].push(`${nanoid(5)}@24g.com`);
         }
       }
       // try by name
