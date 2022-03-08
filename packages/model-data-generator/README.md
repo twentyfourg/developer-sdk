@@ -7,7 +7,7 @@ A script that parses a model file, reads data types required, applies constraint
 ## Usage
 
 ```
-npx @twentyfourg-express-sdk/model-data-generator
+npx @twentyfourg-developer-sdk/model-data-generator
 ```
 
 - Prompts for:
