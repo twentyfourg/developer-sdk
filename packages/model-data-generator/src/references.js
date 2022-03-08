@@ -12,8 +12,7 @@ const references = async (DTO, uniqueObj) => {
 
     if (
       !Object.keys(DTO[current]).includes('defaultValue') &&
-      !Object.keys(DTO[current]).includes('primaryKey') &&
-      !modelObj[current]
+      !Object.keys(DTO[current]).includes('primaryKey')
     ) {
       if (
         Object.keys(DTO[current]).includes('references') &&
