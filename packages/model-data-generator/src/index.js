@@ -4,6 +4,7 @@ require('dotenv').config();
 require('@twentyfourg/cloud-sdk').logger();
 const { StringPrompt, MultiSelect, NumberPrompt, Toggle } = require('enquirer');
 const fs = require('fs');
+const colors = require('ansi-colors');
 const database = require('./util/db.util');
 const generate = require('./generate');
 
@@ -45,6 +46,12 @@ module.exports.run = async () => {
     message: 'What model(s) would you like to populate?',
     sort: true,
     choices: filteredFiles.length >= 1 ? filteredFiles : files,
+    indicator(state, choice) {
+      if (choice.enabled) {
+        return colors.greenBright(state.symbols.check);
+      }
+      return colors.dim.gray(state.symbols.radio.off);
+    },
   }).run();
 
   for (let i = 0; i < models.length; i++) {
@@ -73,7 +80,6 @@ module.exports.run = async () => {
   }
 
   // Only runs generate if all parameters are provided
-
   let populated = true;
   params.forEach((mod) => {
     if (Object.values(mod).includes('') || Object.values(mod).includes(null)) {
