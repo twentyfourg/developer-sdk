@@ -21,7 +21,7 @@ const references = async (DTO, uniqueObj) => {
         const recordType = DTO[current].type.constructor.name;
         let numberType = false;
         modelToQuery = DTO[current].references;
-        const modelName = modelToQuery.model.tableName;
+        const modelName = modelToQuery.model;
 
         switch (recordType) {
           case 'INTEGER':
