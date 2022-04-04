@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.4](https://github.com/twentyfourg/developer-sdk/compare/@twentyfourg-developer-sdk/model-data-generator@1.0.3...@twentyfourg-developer-sdk/model-data-generator@1.0.4) (2022-04-04)
+
+
+### Bug Fixes
+
+* foreign key null issue ([#5](https://github.com/twentyfourg/developer-sdk/issues/5)) ([b3064c9](https://github.com/twentyfourg/developer-sdk/commit/b3064c93badd66b85351294af8c0cdd454e8dc07))
+
+
+
+
+
 ## [1.0.3](https://github.com/twentyfourg/developer-sdk/compare/@twentyfourg-developer-sdk/model-data-generator@1.0.2...@twentyfourg-developer-sdk/model-data-generator@1.0.3) (2022-03-10)
 
 
