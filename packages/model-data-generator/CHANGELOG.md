@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### [1.0.5](https://github.com/twentyfourg/developer-sdk/compare/@twentyfourg-developer-sdk/model-data-generator@1.0.4...@twentyfourg-developer-sdk/model-data-generator@1.0.5) (2022-04-11)
+
+
+### Build
+
+* **deps:** bump @twentyfourg/cloud-sdk from 1.18.3 to 1.25.0 ([f13354b](https://github.com/twentyfourg/developer-sdk/commit/f13354b3e563c6bbbf0a2b5aa9fa67f804c63971))
+* **deps:** bump nanoid from 3.3.1 to 3.3.2 ([4e82f8d](https://github.com/twentyfourg/developer-sdk/commit/4e82f8dab39324e5cfccef2b11aadf1614dbfc4d))
+* **deps:** bump sequelize from 6.17.0 to 6.18.0 ([92aec05](https://github.com/twentyfourg/developer-sdk/commit/92aec057bbc15f951f35e44090a9b82c9be8dc9a))
+
+
+
 ## [1.0.4](https://github.com/twentyfourg/developer-sdk/compare/@twentyfourg-developer-sdk/model-data-generator@1.0.3...@twentyfourg-developer-sdk/model-data-generator@1.0.4) (2022-04-04)
 
 
