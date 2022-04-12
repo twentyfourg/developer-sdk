@@ -21,7 +21,23 @@ const references = async (DTO, uniqueObj) => {
         const recordType = DTO[current].type.constructor.name;
         let numberType = false;
         modelToQuery = DTO[current].references;
-        const modelName = modelToQuery.model;
+        
+        // all the ways a reference can be defined in Sequelize https://sequelize.org/api/v6/class/src/model.js~model#static-method-init
+        let modelName;
+        if (typeof modelToQuery === 'string') {
+          // references: string
+          modelName = modelToQuery;
+        } else if (modelToQuery.model && typeof modelToQuery.model === 'string') {
+          // references: { model: string }
+          modelName = modelToQuery.model;
+        } else if (modelToQuery.model && typeof modelToQuery.model === 'object') {
+          // references: { model: { tableName: string } }
+          // <T extends Sequelize.Model> ends up here too
+          modelName = modelToQuery.model.tableName;
+        }  else {
+          errors.push(`Model with fields ${Object.keys(DTO)} contains a malformed model reference under key ${current}`);
+          break;
+        }
 
         switch (recordType) {
           case 'INTEGER':
