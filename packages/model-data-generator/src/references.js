@@ -41,7 +41,7 @@ const references = async (DTO, uniqueObj) => {
         }
         const db = await database.getPool();
         const [record] = await db
-          .query(`SELECT ${modelToQuery.key} FROM ${modelName} ORDER BY RAND() LIMIT 1`)
+          .query(`SELECT ${modelToQuery.key} FROM \`${modelName}\` ORDER BY RAND() LIMIT 1`)
           .then(([results]) => results)
           .catch((error) => {
             errors.push(error.message);
