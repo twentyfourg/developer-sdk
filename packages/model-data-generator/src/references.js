@@ -45,11 +45,11 @@ const references = async (DTO, uniqueObj) => {
           } else {
             modelKey = refFields[`${current}`];
           }
-        } else if (modelToQuery.model && typeof modelToQuery.model === 'string') {
+        } else if (typeof modelToQuery?.model === 'string') {
           // references: { model: string }
           modelName = modelToQuery.model;
           modelKey = modelToQuery.key;
-        } else if (modelToQuery.model && typeof modelToQuery.model === 'object') {
+        } else if (typeof modelToQuery?.model === 'object') {
           // references: { model: { tableName: string } }
           // <T extends Sequelize.Model> ends up here too
           modelName = modelToQuery.model.tableName;
