@@ -41,16 +41,61 @@ const sequelize = new Sequelize(process.env.SQL_DATABASE, null, null, {
   },
 });
 
-const { UUID, INTEGER, MEDIUMINT, SMALLINT, TINYINT, FLOAT, DECIMAL, STRING, CHAR, BOOLEAN, NOW } =
-  DataTypes;
+const { UUID, STRING } = DataTypes;
 
-class Test extends Model {}
+class Test2 extends Model {}
 
-const testDTO = {
+const test2DTO = {
   id: {
     type: UUID,
     defaultValue: Sequelize.UUIDV4,
     primaryKey: true,
+  },
+  roleSomething: {
+    type: DataTypes.UUID,
+    onDelete: 'SET NULL',
+    allowNull: false,
+    references: 'role',
+  },
+  roleId: {
+    type: DataTypes.UUID,
+    onDelete: 'SET NULL',
+    allowNull: false,
+    references: {
+      model: {
+        tableName: 'role',
+      },
+      key: 'id',
+    },
+  },
+  roleName: {
+    type: DataTypes.UUID,
+    onDelete: 'SET NULL',
+    allowNull: false,
+    references: {
+      model: 'role',
+      key: 'name',
+    },
+  },
+  groupId: {
+    type: DataTypes.UUID,
+    onDelete: 'SET NULL',
+    allowNull: false,
+    references: {
+      model: {
+        tableName: 'group',
+      },
+      key: 'id',
+    },
+  },
+  groupName: {
+    type: DataTypes.UUID,
+    onDelete: 'SET NULL',
+    allowNull: false,
+    references: {
+      model: 'group',
+      key: 'name',
+    },
   },
   name: {
     type: STRING,
@@ -65,71 +110,17 @@ const testDTO = {
   password: {
     type: STRING,
   },
-  timezone: {
-    type: STRING,
-  },
-  state: {
-    type: STRING,
-  },
-  country: {
-    type: STRING,
-  },
-  zip: {
-    type: INTEGER,
-    length: 5,
-  },
-  phone: {
-    type: INTEGER,
-    length: 10,
-  },
-  randomChar: {
-    type: CHAR,
-  },
-  randomBoolean: {
-    type: BOOLEAN,
-  },
-  randomTinyInt: {
-    type: TINYINT,
-  },
-  randomFloat: {
-    type: FLOAT,
-  },
-  randomNow: {
-    type: NOW,
-  },
-  randomNoMatch: {
-    type: UUID,
-  },
-  uniqueRandomChar: {
-    type: CHAR,
-    unique: true,
-  },
-  uniqueRandomMediumInt: {
-    type: MEDIUMINT,
-    unique: true,
-  },
-  uniqueRandomSmallInt: {
-    type: SMALLINT,
-    unique: true,
-  },
-  uniqueRandomDecimal: {
-    type: DECIMAL,
-    unique: true,
-  },
-  uniqueRandomNoMatch: {
-    type: UUID,
-    unique: true,
-  },
+
   ...timestampConfig.fields,
 };
 
-Test.init(testDTO, {
+Test2.init(test2DTO, {
   ...timestampConfig.tableOptions,
   sequelize,
-  tableName: 'test',
+  tableName: 'test2',
 });
 
 module.exports = {
-  model: Test,
-  testDTO,
+  model: Test2,
+  test2DTO,
 };
