@@ -13,7 +13,7 @@
       {
         "path": "/users",
         "custom": false,
-        "payload": ["uniqueEmail", "firstName", "lastName", "password"],
+        "payload": ["email", "firstName", "lastName", "password"],
         "uniquePayload": true,
         "tag": "createUser",
         "authReq": false,

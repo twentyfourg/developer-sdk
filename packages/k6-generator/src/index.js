@@ -2,9 +2,9 @@
 
 const fs = require('fs');
 const replace = require('replace-in-file');
-const { StringPrompt } = require('enquirer');
+const { StringPrompt, NumberPrompt } = require('enquirer');
 
-const templateFile = fs.readFileSync('./template.js');
+const templateFile = fs.readFileSync('./packages/k6-generator/src/template.js');
 
 let [customImport, customMetrics, writeVuObj, uniqueObj, mainContent] = ['', '', '', '', ''];
 
@@ -22,10 +22,20 @@ module.exports.run = async () => {
     process.exit();
   }
 
+  const sleepTime = await new NumberPrompt({
+    message: 'Choose wait time between requests, measured in seconds',
+    initial: 1,
+  }).run();
+
+  if (typeof sleepTime !== 'number' || sleepTime <= 0 || sleepTime > 350) {
+    console.log(`${sleepTime} must be a number between 0 and 350`);
+    process.exit();
+  }
+
   const methods = require(`${__dirname}${methodsPath.slice(methodsPath.indexOf('/'))}`);
 
   const newFile = await new StringPrompt({
-    initial: 'tests/k6/scripts/alpha.js',
+    initial: `./${methodsPath.slice(methodsPath.lastIndexOf('/') + 1, -5)}.k6.js`,
     message: 'Choose path and name for the results file',
   }).run();
 
@@ -38,15 +48,15 @@ module.exports.run = async () => {
 
   // DETERMINE IF UNIQUE DATA IS NEEDED
   for (let i = 0; i < Object.keys(methods.routes).length; i++) {
-    let methodUrl = Object.keys(methods.routes)[i];
+    const methodUrl = Object.keys(methods.routes)[i];
 
     for (let j = 0; j < methods.routes[methodUrl].length; j++) {
-      const current = methods.routes[methodUrl][j];
-      const { path, uniquePayload } = current;
+      const { path, uniquePayload } = methods.routes[methodUrl][j];
+      let uniqueFile;
 
       // GET FILE OF UNIQUE DATA, PARSE NAME OF OBJECT CONTAINED WITHIN
       if (uniquePayload) {
-        const uniqueFile = await new StringPrompt({
+        uniqueFile = await new StringPrompt({
           initial: '../unique/user.json',
           message: `${methodUrl} request to ${path} requires unique payload - provide a path to JSON file containing this data`,
         }).run();
@@ -58,14 +68,14 @@ module.exports.run = async () => {
           console.log(`${uniqueFile} is not a valid path`);
           process.exit();
         }
-
-        customImport = `const SLEEP_DURATION = ${methods['sleep']}\nconst uniqueData = JSON.parse(open('${uniqueFile}'))`;
+        customImport = `JSON.parse(open('${uniqueFile}'))`;
         uniqueObj = `'${uniqueFile.slice(uniqueFile.lastIndexOf('/') + 1, -5)}'`;
       }
-      if (!customImport) {
-        customImport = `const SLEEP_DURATION = ${methods['sleep']}`;
-      }
     }
+  }
+
+  if (!customImport) {
+    customImport = '""';
   }
 
   if (!uniqueObj) {
@@ -74,7 +84,7 @@ module.exports.run = async () => {
 
   // SPAWN CUSTOM THRESHOLDS AND CHECKS
   for (let i = 0; i < Object.keys(methods.routes).length; i++) {
-    let methodUrl = Object.keys(methods.routes)[i];
+    const methodUrl = Object.keys(methods.routes)[i];
 
     for (let j = 0; j < methods.routes[methodUrl].length; j++) {
       const current = methods.routes[methodUrl][j];
@@ -87,19 +97,19 @@ module.exports.run = async () => {
 
   // PULL VU OBJECT FROM METHODS FILE - WITHIN DEFAULT FUNCTION
   const vuObj = Object.assign(methods['vuData']);
-  writeVuObj = `let vuObj = ${JSON.stringify(vuObj)};\n\n`;
+  writeVuObj = `const vuObj = ${JSON.stringify(vuObj)};\n\n`;
 
   // PARSE THROUGH ALL ROUTES AND ADD TO MAIN CONTENT - WITHIN DEFAULT FUNCTION
-  const baseUrl = methods['baseUrl'];
+  const { baseUrl } = methods;
 
   for (let i = 0; i < Object.keys(methods.routes).length; i++) {
-    let methodUrl = Object.keys(methods.routes)[i];
+    const methodUrl = Object.keys(methods.routes)[i];
     let fullPath;
 
     for (let j = 0; j < methods.routes[methodUrl].length; j++) {
-      let current = methods.routes[methodUrl][j];
       const { path, custom, tag, authReq, payload, uniquePayload, propertyReturned, bodyIncludes } =
-        current;
+        methods.routes[methodUrl][j];
+
       const checkSleep = `check(
           ${tag}Res, {
             ['${methodUrl} - ${path} returns successful status']:  (r) => r.status === 200 || r.status === 204,
@@ -236,13 +246,21 @@ module.exports.run = async () => {
   options = {
     files: newFile,
     from: [
+      /DYNAMIC_SLEEP_TIME/g,
       /DYNAMIC_IMPORTS_VARS/g,
       /DYNAMIC_THRESHOLDS/g,
       /DYNAMIC_VU_OBJ/g,
       /DYNAMIC_UNIQUE_OBJ/g,
       /DYNAMIC_ROUTE_RES/g,
     ],
-    to: [`${customImport}`, `${customMetrics}`, `${writeVuObj}`, `${uniqueObj}`, `${mainContent}`],
+    to: [
+      `${sleepTime}`,
+      `${customImport}`,
+      `${customMetrics}`,
+      `${writeVuObj}`,
+      `${uniqueObj}`,
+      `${mainContent}`,
+    ],
     countMatches: true,
   };
 

@@ -1,9 +1,10 @@
 import http from 'k6/http';
-import { sleep, check, group } from 'k6';
+import { sleep, check } from 'k6';
 import { scenario } from 'k6/execution';
 import { htmlReport } from 'https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js';
 import { textSummary } from 'https://jslib.k6.io/k6-summary/0.0.1/index.js';
-DYNAMIC_IMPORTS_VARS;
+const SLEEP_DURATION = DYNAMIC_SLEEP_TIME;
+const uniqueData = DYNAMIC_IMPORTS_VARS;
 const uniqueObj = DYNAMIC_UNIQUE_OBJ;
 
 export const options = {
@@ -77,7 +78,7 @@ export const options = {
   },
 };
 
-export default function (_) {
+export default function () {
   DYNAMIC_VU_OBJ;
 
   const params = {
@@ -118,7 +119,7 @@ export default function (_) {
 
 export function handleSummary(data) {
   return {
-    './tests/k6/reports/summary.html': htmlReport(data),
+    './summary.html': htmlReport(data),
     stdout: textSummary(data, { indent: ' ', enableColors: true }),
   };
 }
