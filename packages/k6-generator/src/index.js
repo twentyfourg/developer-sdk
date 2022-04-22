@@ -116,6 +116,7 @@ module.exports.run = async () => {
       uniquePayload,
       propertyReturned,
       bodyIncludes,
+      setNull,
     } = methods.routes[i];
 
     let fullPath;
@@ -155,7 +156,7 @@ module.exports.run = async () => {
 
     switch (method) {
       case 'post':
-        const postContent = `${setup}
+        let postContent = `${setup}
             const ${tag}Res = 
               reqBody && Object.keys(reqBody).length >= 1 
               ? http.post('${fullPath}', reqBody, {
@@ -166,21 +167,25 @@ module.exports.run = async () => {
                 tags: { name: '${tag}' },
                 headers: ${authReq} ? params.headers : null,
               });
-
-            ${tag === 'createUser' && `vuObj.id = ${tag}Res.json()['id'];`}
-            ${
-              tag.toLowerCase().includes('login') &&
-              `vuObj.token = ${tag}Res.json()['token'];
-              params.headers['Authorization'] = vuObj.token;`
-            }
-            ${
-              tag.toLowerCase().includes('logout') &&
-              `vuObj.token = null;
-              params.headers['Authorization'] = null;`
-            }
             
             ${checkSleep}`;
 
+        if (tag.toLowerCase().includes('create') && `${tag}Res?.json()?.id`) {
+          postContent = `${postContent}
+          vuObj.id = ${tag}Res.json()['id'];\n\n`;
+        }
+
+        if (tag.toLowerCase().includes('login') && `${tag}Res?.json()?.token`) {
+          postContent = `${postContent}
+          vuObj.token = ${tag}Res.json()['token']
+          params.headers['Authorization'] = vuObj.token;\n\n`;
+        }
+
+        if (setNull) {
+          setNull.forEach(
+            (property) => (postContent = `${postContent}\nvuObj['${property}'] = null`)
+          );
+        }
         mainContent = `${mainContent}${postContent}`;
         break;
       case 'get':
@@ -229,7 +234,7 @@ module.exports.run = async () => {
         mainContent = `${mainContent}${putContent}`;
         break;
       case 'delete':
-        const deleteContent = `${setup}
+        let deleteContent = `${setup}
             const ${tag}Res = 
               reqBody && Object.keys(reqBody).length >= 1
               ? http.del(\`${fullPath}\`, reqBody, {
@@ -243,10 +248,15 @@ module.exports.run = async () => {
             
             ${checkSleep}`;
 
+        if (setNull) {
+          setNull.forEach(
+            (property) => (deleteContent = `${deleteContent}\nvuObj['${property}'] = null`)
+          );
+        }
         mainContent = `${mainContent}${deleteContent}`;
         break;
       default:
-        console.log('No method found', method);
+        console.log('No matching method found for: ', method);
         break;
     }
   }

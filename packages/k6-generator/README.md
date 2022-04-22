@@ -18,7 +18,8 @@ Once the k6 script has been generated, it can be run with:
 
 `k6 run tests/k6/scripts/SCRIPT_NAME`
 
-Reports from k6 runs are generated and saved as `summary.html` by default. ITo view the report, open it in a browser. To save the report, give the report a unique name - otherwise it will be overwritten on the next k6 run.
+To view the generated report after running the k6 script, simply open it in a browser.
+To save the report, ensure the report has a unique name - otherwise it may be overwritten on the next k6 run.
 
 - Dependencies:
 
@@ -45,47 +46,70 @@ Example:
 
 ```
   {
-    "baseUrl": "http://localhost:3000",
-    "vuData": {
-        "email": "test@24g.com",
-        "password": "**********",
-        "firstName": "Alpha",
-        "lastName": "Test",
-        "id": "********"
+  "baseUrl": "http://localhost:3000",
+  "vuData": {
+    "email": "test@24g.com",
+    "password": "************",
+    "firstName": "Alpha",
+    "lastName": "Test",
+    "id": "************"
+  },
+  "routes": [
+    {
+      "method": "post",
+      "path": "/users",
+      "custom": false,
+      "payload": ["email", "firstName", "lastName", "password"],
+      "uniquePayload": true,
+      "tag": "createUser",
+      "authReq": false,
+      "propertyReturned": "id",
+      "bodyIncludes": null
     },
-    "routes": {
-        "createUser": [
-            {
-            "path": "/users",
-            "custom": false,
-            "payload": ["email", "firstName", "lastName", "password"],
-            "uniquePayload": true,
-            "tag": "createUser",
-            "authReq": false,
-            "propertyReturned": "id",
-            "bodyIncludes": null
-            }
-        ],
-        "login": [],
-        "profile": [],
-        "get": [],
-        "post": [],
-        "put": [
-            {
-            "path": "/users/${id}",
-            "custom": true,
-            "payload": ["email", "firstName", "lastName", "password"],
-            "uniquePayload": false,
-            "tag": "editUser",
-            "authReq": true,
-            "propertyReturned": "",
-            "bodyIncludes": null
-            }
-        ],
-        "delete": [],
-        "logout": []
+    {
+      "method": "post",
+      "path": "/users/auth",
+      "custom": false,
+      "payload": ["email", "password"],
+      "uniquePayload": false,
+      "tag": "userLogin",
+      "authReq": false,
+      "propertyReturned": "token",
+      "bodyIncludes": null
+    },
+    {
+      "method": "put",
+      "path": "/users/${id}",
+      "custom": true,
+      "payload": ["email", "firstName", "lastName", "password"],
+      "uniquePayload": false,
+      "tag": "editUser",
+      "authReq": true,
+      "propertyReturned": "",
+      "bodyIncludes": null
+    },
+    {
+      "method": "get",
+      "path": "/users?limit=10&offset=0",
+      "custom": false,
+      "tag": "getAllUsers",
+      "authReq": true,
+      "propertyReturned": "users",
+      "bodyIncludes": null
+    },
+    {
+      "method": "delete",
+      "path": "/users/${id}",
+      "custom": true,
+      "tag": "deleteUser",
+      "authReq": true,
+      "propertyReturned": "",
+      "bodyIncludes": null,
+      "setNull": ["id", "token"]
     }
-  }
+  ]
+}
+
 ```
 
 - `vuData` object should contain any variables needed in the method path
@@ -94,6 +118,7 @@ Example:
     - ex. `put` request in example JSON file requires an `${id}`
   - Include a property that the results should reliably include (ex. `id`, `token`, etc.)
   - If route does not return an object with properties to check against, include a unique snippet from the body of the response to check for. If there is a property to check, leave `bodyIncludes` as null and vice versa. If the route is a `204 No Content` the script will overlook the 'valid body' check as there should be nothing to check.
+  - `setNull` property is supported by `post` and `delete` requests to accommodate for a user logging out (remove token) and user account being deleted (both id and token can be removed)
 
 ---
 

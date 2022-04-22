@@ -57,7 +57,8 @@
       "tag": "deleteUser",
       "authReq": true,
       "propertyReturned": "",
-      "bodyIncludes": null
+      "bodyIncludes": null,
+      "setNull": ["id", "token"]
     }
   ]
 }

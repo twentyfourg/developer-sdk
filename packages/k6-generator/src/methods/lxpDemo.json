@@ -264,7 +264,8 @@
       "tag": "userLogout",
       "authReq": true,
       "propertyReturned": "",
-      "bodyIncludes": null
+      "bodyIncludes": null,
+      "setNull": ["token"]
     }
   ]
 }

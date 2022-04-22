@@ -147,10 +147,6 @@ export default function () {
           headers: false ? params.headers : null,
         });
 
-  vuObj.id = createUserRes.json()['id'];
-  false;
-  false;
-
   check(
     createUserRes,
     {
@@ -163,6 +159,8 @@ export default function () {
   );
   reqBody = {};
   sleep(SLEEP_DURATION);
+
+  vuObj.id = createUserRes.json()['id'];
 
   payload = ['email', 'password'];
   if (true) {
@@ -181,11 +179,6 @@ export default function () {
           headers: false ? params.headers : null,
         });
 
-  false;
-  vuObj.token = userLoginRes.json()['token'];
-  params.headers['Authorization'] = vuObj.token;
-  false;
-
   check(
     userLoginRes,
     {
@@ -198,6 +191,9 @@ export default function () {
   );
   reqBody = {};
   sleep(SLEEP_DURATION);
+
+  vuObj.token = userLoginRes.json()['token'];
+  params.headers['Authorization'] = vuObj.token;
 
   payload = ['email', 'firstName', 'lastName', 'password'];
   if (true) {
@@ -283,6 +279,9 @@ export default function () {
   );
   reqBody = {};
   sleep(SLEEP_DURATION);
+
+  vuObj['id'] = null;
+  vuObj['token'] = null;
 }
 
 export function handleSummary(data) {
