@@ -119,7 +119,7 @@ export default function () {
 
 export function handleSummary(data) {
   return {
-    './summary.html': htmlReport(data),
+    DYNAMIC_SUMMARY_PATH: htmlReport(data),
     stdout: textSummary(data, { indent: ' ', enableColors: true }),
   };
 }

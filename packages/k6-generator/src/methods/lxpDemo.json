@@ -1,6 +1,5 @@
 {
   "baseUrl": "https://api-dev-2772-1.demo.lxp.live",
-  "sleep": 1,
   "vuData": {
     "email": "rose.landroche@24g.com",
     "password": "insecure123!@#",

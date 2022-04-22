@@ -1,5 +1,6 @@
 !.prettierrc.js
 !.develop
 !.commitlintrc.js
+packages/k6-generator/src/scripts
 packages/k6-generator/src/index.js
 packages/k6-generator/src/template.js

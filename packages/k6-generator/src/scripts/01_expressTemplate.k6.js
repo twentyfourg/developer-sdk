@@ -1,6 +1,5 @@
-// K6 TEMPLATE
 import http from 'k6/http';
-import { sleep, check, group } from 'k6';
+import { sleep, check } from 'k6';
 import { scenario } from 'k6/execution';
 import { htmlReport } from 'https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js';
 import { textSummary } from 'https://jslib.k6.io/k6-summary/0.0.1/index.js';
@@ -89,8 +88,8 @@ export const options = {
   },
 };
 
-export default function (_) {
-  let vuObj = {
+export default function () {
+  const vuObj = {
     email: 'test@24g.com',
     password: '24GP@ssword368',
     firstName: 'Alpha',
@@ -131,7 +130,7 @@ export default function (_) {
     }
   };
 
-  payload = ['uniqueEmail', 'firstName', 'lastName', 'password'];
+  payload = ['email', 'firstName', 'lastName', 'password'];
   if (true) {
     parsePayload(true);
   }
@@ -288,7 +287,7 @@ export default function (_) {
 
 export function handleSummary(data) {
   return {
-    './tests/k6/reports/summary.html': htmlReport(data),
+    './packages/k6-generator/src/reports/summary.html': htmlReport(data),
     stdout: textSummary(data, { indent: ' ', enableColors: true }),
   };
 }

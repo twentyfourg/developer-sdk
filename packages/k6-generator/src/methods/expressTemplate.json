@@ -1,6 +1,5 @@
 {
   "baseUrl": "http://localhost:3000",
-  "sleep": 1,
   "vuData": {
     "email": "test@24g.com",
     "password": "24GP@ssword368",
