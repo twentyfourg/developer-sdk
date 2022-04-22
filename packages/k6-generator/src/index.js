@@ -169,9 +169,14 @@ module.exports.run = async () => {
 
             ${tag === 'createUser' && `vuObj.id = ${tag}Res.json()['id'];`}
             ${
-              tag === 'userLogin' &&
+              tag.toLowerCase().includes('login') &&
               `vuObj.token = ${tag}Res.json()['token'];
               params.headers['Authorization'] = vuObj.token;`
+            }
+            ${
+              tag.toLowerCase().includes('logout') &&
+              `vuObj.token = null;
+              params.headers['Authorization'] = null;`
             }
             
             ${checkSleep}`;
