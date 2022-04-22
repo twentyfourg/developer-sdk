@@ -12,247 +12,259 @@
     "pollId": "",
     "itemId": ""
   },
-  "routes": {
-    "createUser": [],
-    "login": [
-      {
-        "path": "/users/auth",
-        "custom": false,
-        "payload": ["email", "password"],
-        "uniquePayload": false,
-        "tag": "userLogin",
-        "authReq": false,
-        "propertyReturned": "token",
-        "bodyIncludes": null
-      }
-    ],
-    "profile": [],
-    "get": [
-      {
-        "path": "/users/${id}/profile",
-        "custom": true,
-        "payload": null,
-        "uniquePayload": false,
-        "tag": "userProfile",
-        "authReq": true,
-        "propertyReturned": "user",
-        "bodyIncludes": null
-      },
-      {
-        "path": "/users/${id}/connections",
-        "custom": true,
-        "payload": null,
-        "uniquePayload": false,
-        "tag": "userConnections",
-        "authReq": true,
-        "propertyReturned": "userConnections",
-        "bodyIncludes": null
-      },
-      {
-        "path": "/users/${id}/badges",
-        "custom": true,
-        "payload": null,
-        "uniquePayload": false,
-        "tag": "userBadges",
-        "authReq": true,
-        "propertyReturned": "userBadges",
-        "bodyIncludes": null
-      },
-      {
-        "path": "/users/classrooms",
-        "custom": false,
-        "payload": null,
-        "uniquePayload": false,
-        "tag": "userClassrooms",
-        "authReq": true,
-        "propertyReturned": "classrooms",
-        "bodyIncludes": null
-      },
-      {
-        "path": "/users/classrooms/link",
-        "custom": false,
-        "payload": null,
-        "uniquePayload": false,
-        "tag": "userClassroomsLink",
-        "authReq": true,
-        "propertyReturned": "icsLink",
-        "bodyIncludes": null
-      },
-      {
-        "path": "/users/notepads",
-        "custom": false,
-        "payload": null,
-        "uniquePayload": false,
-        "tag": "userNotepads",
-        "authReq": true,
-        "propertyReturned": "notepads",
-        "bodyIncludes": null
-      },
-      {
-        "path": "/challenges/dashboard",
-        "custom": false,
-        "payload": null,
-        "uniquePayload": false,
-        "tag": "challengesAll",
-        "authReq": true,
-        "propertyReturned": "challenges",
-        "bodyIncludes": null
-      },
-      {
-        "path": "/challenges/${challengeId}",
-        "custom": true,
-        "payload": null,
-        "uniquePayload": false,
-        "tag": "challengeOne",
-        "authReq": true,
-        "propertyReturned": "id",
-        "bodyIncludes": null
-      },
-      {
-        "path": "/classrooms",
-        "custom": false,
-        "payload": null,
-        "uniquePayload": false,
-        "tag": "classroomsAll",
-        "authReq": true,
-        "propertyReturned": "classrooms",
-        "bodyIncludes": null
-      },
-      {
-        "path": "/classrooms/dashboard",
-        "custom": false,
-        "payload": null,
-        "uniquePayload": false,
-        "tag": "classroomDash",
-        "authReq": true,
-        "propertyReturned": "classrooms",
-        "bodyIncludes": null
-      },
-      {
-        "path": "/classrooms/live-now",
-        "custom": false,
-        "payload": null,
-        "uniquePayload": false,
-        "tag": "classLiveNow",
-        "authReq": true,
-        "propertyReturned": "live",
-        "bodyIncludes": null
-      },
-      {
-        "path": "/classrooms/subscribe?token=${calendarSyncToken}",
-        "custom": true,
-        "payload": null,
-        "uniquePayload": false,
-        "tag": "classSubscribe",
-        "authReq": true,
-        "propertyReturned": null,
-        "bodyIncludes": "BEGIN:VCALENDAR"
-      },
-      {
-        "path": "/classrooms/${classroomId}",
-        "custom": true,
-        "payload": null,
-        "uniquePayload": false,
-        "tag": "classroomOne",
-        "authReq": true,
-        "propertyReturned": "classroom",
-        "bodyIncludes": null
-      },
-      {
-        "path": "/classrooms/${classroomId}/notepad",
-        "custom": true,
-        "payload": null,
-        "uniquePayload": false,
-        "tag": "classroomNotepad",
-        "authReq": true,
-        "propertyReturned": "notepad",
-        "bodyIncludes": null
-      },
-      {
-        "path": "/points/${id}",
-        "custom": true,
-        "payload": null,
-        "uniquePayload": false,
-        "tag": "userPoints",
-        "authReq": true,
-        "propertyReturned": "rewardPoints",
-        "bodyIncludes": null
-      },
-      {
-        "path": "/polls",
-        "custom": false,
-        "payload": null,
-        "uniquePayload": false,
-        "tag": "pollsAll",
-        "authReq": true,
-        "propertyReturned": "polls",
-        "bodyIncludes": null
-      },
-      {
-        "path": "/polls/${pollId}",
-        "custom": true,
-        "payload": null,
-        "uniquePayload": false,
-        "tag": "pollOne",
-        "authReq": true,
-        "propertyReturned": "poll",
-        "bodyIncludes": null
-      },
-      {
-        "path": "/store",
-        "custom": false,
-        "payload": null,
-        "uniquePayload": false,
-        "tag": "storeAllItems",
-        "authReq": true,
-        "propertyReturned": "items",
-        "bodyIncludes": null
-      },
-      {
-        "path": "/store/${itemId}",
-        "custom": true,
-        "payload": null,
-        "uniquePayload": false,
-        "tag": "storeOneItem",
-        "authReq": true,
-        "propertyReturned": "item",
-        "bodyIncludes": null
-      },
-      {
-        "path": "/enums",
-        "custom": false,
-        "payload": null,
-        "uniquePayload": false,
-        "tag": "enums",
-        "authReq": true,
-        "propertyReturned": "assetTypes",
-        "bodyIncludes": null
-      },
-      {
-        "path": "/slider",
-        "custom": false,
-        "payload": null,
-        "uniquePayload": false,
-        "tag": "slider",
-        "authReq": true,
-        "propertyReturned": "slider",
-        "bodyIncludes": null
-      }
-    ],
-    "post": [],
-    "put": [],
-    "delete": [],
-    "logout": [
-      {
-        "path": "/users/logout",
-        "custom": false,
-        "payload": null,
-        "uniquePayload": false,
-        "tag": "userLogout",
-        "authReq": true,
-        "propertyReturned": "",
-        "bodyIncludes": null
-      }
-    ]
-  }
+  "routes": [
+    {
+      "method": "post",
+      "path": "/users/auth",
+      "custom": false,
+      "payload": ["email", "password"],
+      "uniquePayload": false,
+      "tag": "userLogin",
+      "authReq": false,
+      "propertyReturned": "token",
+      "bodyIncludes": null
+    },
+    {
+      "method": "get",
+      "path": "/users/${id}/profile",
+      "custom": true,
+      "payload": null,
+      "uniquePayload": false,
+      "tag": "userProfile",
+      "authReq": true,
+      "propertyReturned": "user",
+      "bodyIncludes": null
+    },
+    {
+      "method": "get",
+      "path": "/users/${id}/connections",
+      "custom": true,
+      "payload": null,
+      "uniquePayload": false,
+      "tag": "userConnections",
+      "authReq": true,
+      "propertyReturned": "userConnections",
+      "bodyIncludes": null
+    },
+    {
+      "method": "get",
+      "path": "/users/${id}/badges",
+      "custom": true,
+      "payload": null,
+      "uniquePayload": false,
+      "tag": "userBadges",
+      "authReq": true,
+      "propertyReturned": "userBadges",
+      "bodyIncludes": null
+    },
+    {
+      "method": "get",
+      "path": "/users/classrooms",
+      "custom": false,
+      "payload": null,
+      "uniquePayload": false,
+      "tag": "userClassrooms",
+      "authReq": true,
+      "propertyReturned": "classrooms",
+      "bodyIncludes": null
+    },
+    {
+      "method": "get",
+      "path": "/users/classrooms/link",
+      "custom": false,
+      "payload": null,
+      "uniquePayload": false,
+      "tag": "userClassroomsLink",
+      "authReq": true,
+      "propertyReturned": "icsLink",
+      "bodyIncludes": null
+    },
+    {
+      "method": "get",
+      "path": "/users/notepads",
+      "custom": false,
+      "payload": null,
+      "uniquePayload": false,
+      "tag": "userNotepads",
+      "authReq": true,
+      "propertyReturned": "notepads",
+      "bodyIncludes": null
+    },
+    {
+      "method": "get",
+      "path": "/challenges/dashboard",
+      "custom": false,
+      "payload": null,
+      "uniquePayload": false,
+      "tag": "challengesAll",
+      "authReq": true,
+      "propertyReturned": "challenges",
+      "bodyIncludes": null
+    },
+    {
+      "method": "get",
+      "path": "/challenges/${challengeId}",
+      "custom": true,
+      "payload": null,
+      "uniquePayload": false,
+      "tag": "challengeOne",
+      "authReq": true,
+      "propertyReturned": "id",
+      "bodyIncludes": null
+    },
+    {
+      "method": "get",
+      "path": "/classrooms",
+      "custom": false,
+      "payload": null,
+      "uniquePayload": false,
+      "tag": "classroomsAll",
+      "authReq": true,
+      "propertyReturned": "classrooms",
+      "bodyIncludes": null
+    },
+    {
+      "method": "get",
+      "path": "/classrooms/dashboard",
+      "custom": false,
+      "payload": null,
+      "uniquePayload": false,
+      "tag": "classroomDash",
+      "authReq": true,
+      "propertyReturned": "classrooms",
+      "bodyIncludes": null
+    },
+    {
+      "method": "get",
+      "path": "/classrooms/live-now",
+      "custom": false,
+      "payload": null,
+      "uniquePayload": false,
+      "tag": "classLiveNow",
+      "authReq": true,
+      "propertyReturned": "live",
+      "bodyIncludes": null
+    },
+    {
+      "method": "get",
+      "path": "/classrooms/subscribe?token=${calendarSyncToken}",
+      "custom": true,
+      "payload": null,
+      "uniquePayload": false,
+      "tag": "classSubscribe",
+      "authReq": true,
+      "propertyReturned": null,
+      "bodyIncludes": "BEGIN:VCALENDAR"
+    },
+    {
+      "method": "get",
+      "path": "/classrooms/${classroomId}",
+      "custom": true,
+      "payload": null,
+      "uniquePayload": false,
+      "tag": "classroomOne",
+      "authReq": true,
+      "propertyReturned": "classroom",
+      "bodyIncludes": null
+    },
+    {
+      "method": "get",
+      "path": "/classrooms/${classroomId}/notepad",
+      "custom": true,
+      "payload": null,
+      "uniquePayload": false,
+      "tag": "classroomNotepad",
+      "authReq": true,
+      "propertyReturned": "notepad",
+      "bodyIncludes": null
+    },
+    {
+      "method": "get",
+      "path": "/points/${id}",
+      "custom": true,
+      "payload": null,
+      "uniquePayload": false,
+      "tag": "userPoints",
+      "authReq": true,
+      "propertyReturned": "rewardPoints",
+      "bodyIncludes": null
+    },
+    {
+      "method": "get",
+      "path": "/polls",
+      "custom": false,
+      "payload": null,
+      "uniquePayload": false,
+      "tag": "pollsAll",
+      "authReq": true,
+      "propertyReturned": "polls",
+      "bodyIncludes": null
+    },
+    {
+      "method": "get",
+      "path": "/polls/${pollId}",
+      "custom": true,
+      "payload": null,
+      "uniquePayload": false,
+      "tag": "pollOne",
+      "authReq": true,
+      "propertyReturned": "poll",
+      "bodyIncludes": null
+    },
+    {
+      "method": "get",
+      "path": "/store",
+      "custom": false,
+      "payload": null,
+      "uniquePayload": false,
+      "tag": "storeAllItems",
+      "authReq": true,
+      "propertyReturned": "items",
+      "bodyIncludes": null
+    },
+    {
+      "method": "get",
+      "path": "/store/${itemId}",
+      "custom": true,
+      "payload": null,
+      "uniquePayload": false,
+      "tag": "storeOneItem",
+      "authReq": true,
+      "propertyReturned": "item",
+      "bodyIncludes": null
+    },
+    {
+      "method": "get",
+      "path": "/enums",
+      "custom": false,
+      "payload": null,
+      "uniquePayload": false,
+      "tag": "enums",
+      "authReq": true,
+      "propertyReturned": "assetTypes",
+      "bodyIncludes": null
+    },
+    {
+      "method": "get",
+      "path": "/slider",
+      "custom": false,
+      "payload": null,
+      "uniquePayload": false,
+      "tag": "slider",
+      "authReq": true,
+      "propertyReturned": "slider",
+      "bodyIncludes": null
+    },
+    {
+      "method": "post",
+      "path": "/users/logout",
+      "custom": false,
+      "payload": null,
+      "uniquePayload": false,
+      "tag": "userLogout",
+      "authReq": true,
+      "propertyReturned": "",
+      "bodyIncludes": null
+    }
+  ]
 }

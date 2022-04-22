@@ -7,65 +7,57 @@
     "lastName": "Test",
     "id": "2018f80c-aa83-4d3b-94b0-e872df158cf3"
   },
-  "routes": {
-    "createUser": [
-      {
-        "path": "/users",
-        "custom": false,
-        "payload": ["email", "firstName", "lastName", "password"],
-        "uniquePayload": true,
-        "tag": "createUser",
-        "authReq": false,
-        "propertyReturned": "id",
-        "bodyIncludes": null
-      }
-    ],
-    "login": [
-      {
-        "path": "/users/auth",
-        "custom": false,
-        "payload": ["email", "password"],
-        "uniquePayload": false,
-        "tag": "userLogin",
-        "authReq": false,
-        "propertyReturned": "token",
-        "bodyIncludes": null
-      }
-    ],
-    "profile": [],
-    "get": [
-      {
-        "path": "/users?limit=10&offset=0",
-        "custom": false,
-        "tag": "getAllUsers",
-        "authReq": true,
-        "propertyReturned": "users",
-        "bodyIncludes": null
-      }
-    ],
-    "post": [],
-    "put": [
-      {
-        "path": "/users/${id}",
-        "custom": true,
-        "payload": ["email", "firstName", "lastName", "password"],
-        "uniquePayload": false,
-        "tag": "editUser",
-        "authReq": true,
-        "propertyReturned": "",
-        "bodyIncludes": null
-      }
-    ],
-    "delete": [
-      {
-        "path": "/users/${id}",
-        "custom": true,
-        "tag": "deleteUser",
-        "authReq": true,
-        "propertyReturned": "",
-        "bodyIncludes": null
-      }
-    ],
-    "logout": []
-  }
+  "routes": [
+    {
+      "method": "post",
+      "path": "/users",
+      "custom": false,
+      "payload": ["email", "firstName", "lastName", "password"],
+      "uniquePayload": true,
+      "tag": "createUser",
+      "authReq": false,
+      "propertyReturned": "id",
+      "bodyIncludes": null
+    },
+    {
+      "method": "post",
+      "path": "/users/auth",
+      "custom": false,
+      "payload": ["email", "password"],
+      "uniquePayload": false,
+      "tag": "userLogin",
+      "authReq": false,
+      "propertyReturned": "token",
+      "bodyIncludes": null
+    },
+    {
+      "method": "put",
+      "path": "/users/${id}",
+      "custom": true,
+      "payload": ["email", "firstName", "lastName", "password"],
+      "uniquePayload": false,
+      "tag": "editUser",
+      "authReq": true,
+      "propertyReturned": "",
+      "bodyIncludes": null
+    },
+    {
+      "method": "get",
+      "path": "/users?limit=10&offset=0",
+      "custom": false,
+      "tag": "getAllUsers",
+      "authReq": true,
+      "propertyReturned": "users",
+      "bodyIncludes": null
+    },
+    {
+      "method": "delete",
+      "path": "/users/${id}",
+      "custom": true,
+      "tag": "deleteUser",
+      "authReq": true,
+      "propertyReturned": "",
+      "bodyIncludes": null
+    }
+  ]
 }
