@@ -132,6 +132,7 @@ module.exports.run = async () => {
           );
           reqBody = {}
           sleep(SLEEP_DURATION);\n\n`;
+
     const setup = `payload = ${JSON.stringify(payload)}
         if (${payload && payload.length > 0}) {
             parsePayload(${uniquePayload})
@@ -253,6 +254,7 @@ module.exports.run = async () => {
             (property) => (deleteContent = `${deleteContent}\nvuObj['${property}'] = null`)
           );
         }
+
         mainContent = `${mainContent}${deleteContent}`;
         break;
       default:

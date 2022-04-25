@@ -10,9 +10,7 @@ CURRENTLY: `npx ./packages/k6-generator`
 
 IN FUTURE: `npx @twentyfourg-developer-sdk/k6-generator`
 
-This command results in a k6 test script reflective of the methods included in the methods JSON file. This means that it may be a comprehensive 'master' script, calling each method of the project, or it can be customized by using a unique methods file or by editing the resulting script file. In order for the script to properly encapsulate a specific scenario (user logs in, visits specific urls, logs off) the script _must be edited_.
-
-It should also be noted that the order of methods matters. For example, if creating a user or logging in and visiting urls requiring auth, these steps must occur first in the methods JSON file so that the `id` and/or `token` can be retained and passed to other methods.
+This command results in a k6 test script reflective of the methods included in the methods JSON file. This means that it may be a comprehensive 'master' script, calling each method of the project, or it can be customized by using a unique methods file or by editing the resulting script file.
 
 Once the k6 script has been generated, it can be run with:
 
