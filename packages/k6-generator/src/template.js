@@ -107,7 +107,7 @@ export default function () {
         reqBody[item] = vuObj[item];
       });
     } else {
-      reqBody = uniqueData[uniqueObj][vu.idInTest];
+      reqBody = uniqueData[uniqueObj][vu.idInTest - 1];
       Object.keys(reqBody).forEach((key) => {
         vuObj[key] = reqBody[key];
       });
