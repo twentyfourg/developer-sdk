@@ -1,11 +1,11 @@
 import http from 'k6/http';
 import { sleep, check } from 'k6';
-import { scenario } from 'k6/execution';
+import { SharedArray } from 'k6/data';
+import { vu } from 'k6/execution';
 import { htmlReport } from 'https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js';
 import { textSummary } from 'https://jslib.k6.io/k6-summary/0.0.1/index.js';
 const SLEEP_DURATION = 1;
-const uniqueData = '';
-const uniqueObj = '';
+const uniqueData = null;
 
 export const options = {
   teardownTimeout: '2m',
@@ -14,7 +14,7 @@ export const options = {
     smoke: {
       executor: 'constant-vus',
       vus: 1,
-      duration: '20s',
+      duration: '40s',
     },
     //
     // https://k6.io/docs/test-types/load-testing/
@@ -164,7 +164,7 @@ export default function () {
         reqBody[item] = vuObj[item];
       });
     } else {
-      reqBody = uniqueData[uniqueObj][scenario.iterationInTest];
+      reqBody = uniqueData[vu.idInTest - 1];
       Object.keys(reqBody).forEach((key) => {
         vuObj[key] = reqBody[key];
       });
@@ -768,7 +768,7 @@ export default function () {
 
 export function handleSummary(data) {
   return {
-    './packages/k6-generator/src/reports/02_lxpDemo_summary.html': htmlReport(data),
+    'packages/k6-generator/src/reports/02_lxpDemo_summary.html': htmlReport(data),
     stdout: textSummary(data, { indent: ' ', enableColors: true }),
   };
 }

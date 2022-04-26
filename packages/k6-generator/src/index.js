@@ -6,7 +6,7 @@ const { StringPrompt, NumberPrompt } = require('enquirer');
 
 const templateFile = fs.readFileSync('./packages/k6-generator/src/template.js');
 
-let [customImport, customMetrics, writeVuObj, uniqueObj, mainContent] = ['', '', '', '', ''];
+let [customImport, customMetrics, writeVuObj, mainContent] = ['', '', '', ''];
 
 module.exports.run = async () => {
   const methodsPath = await new StringPrompt({
@@ -77,16 +77,16 @@ module.exports.run = async () => {
         process.exit();
       }
       customImport = `JSON.parse(open('${uniqueFile}'))`;
-      uniqueObj = `'${uniqueFile.slice(uniqueFile.lastIndexOf('/') + 1, -5)}'`;
+      const uniqueObj = `${uniqueFile.slice(uniqueFile.lastIndexOf('/') + 1, -5)}`;
+
+      customImport = `new SharedArray('${uniqueObj}', function () {
+        return ${customImport}.${uniqueObj};
+      })`;
     }
   }
 
   if (!customImport) {
-    customImport = '""';
-  }
-
-  if (!uniqueObj) {
-    uniqueObj = '""';
+    customImport = null;
   }
 
   // SPAWN CUSTOM THRESHOLDS AND CHECKS
@@ -270,7 +270,6 @@ module.exports.run = async () => {
       /DYNAMIC_IMPORTS_VARS/g,
       /DYNAMIC_THRESHOLDS/g,
       /DYNAMIC_VU_OBJ/g,
-      /DYNAMIC_UNIQUE_OBJ/g,
       /DYNAMIC_ROUTE_RES/g,
       /DYNAMIC_SUMMARY_PATH/g,
     ],
@@ -279,7 +278,6 @@ module.exports.run = async () => {
       `${customImport}`,
       `${customMetrics}`,
       `${writeVuObj}`,
-      `${uniqueObj}`,
       `${mainContent}`,
       `"${summaryReport}"`,
     ],
