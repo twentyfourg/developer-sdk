@@ -1,11 +1,13 @@
 import http from 'k6/http';
 import { sleep, check } from 'k6';
+import { SharedArray } from 'k6/data';
 import { vu } from 'k6/execution';
 import { htmlReport } from 'https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js';
 import { textSummary } from 'https://jslib.k6.io/k6-summary/0.0.1/index.js';
 const SLEEP_DURATION = 1;
-const uniqueData = JSON.parse(open('../unique/user.json'));
-const uniqueObj = 'user';
+const uniqueData = new SharedArray('user', function () {
+  return JSON.parse(open('../../../../unique/user.json')).user;
+});
 
 export const options = {
   teardownTimeout: '2m',
@@ -123,7 +125,7 @@ export default function () {
         reqBody[item] = vuObj[item];
       });
     } else {
-      reqBody = uniqueData[uniqueObj][vu.idInTest];
+      reqBody = uniqueData[vu.idInTest - 1];
       Object.keys(reqBody).forEach((key) => {
         vuObj[key] = reqBody[key];
       });
@@ -286,7 +288,7 @@ export default function () {
 
 export function handleSummary(data) {
   return {
-    'packages/k6-generator/src/reports/01_expressTemplate_summary.html': htmlReport(data),
+    './packages/k6-generator/src/reports/expressTemplate.summary.1651180134.html': htmlReport(data),
     stdout: textSummary(data, { indent: ' ', enableColors: true }),
   };
 }
