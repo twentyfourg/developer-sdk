@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const fs = require('fs');
+const path = require('path');
 const replace = require('replace-in-file');
 const { StringPrompt, NumberPrompt } = require('enquirer');
 
@@ -13,10 +14,7 @@ module.exports.run = async () => {
     message: 'Confirm the path to the methods JSON file:',
   }).run();
 
-  if (
-    !fs.existsSync(`${__dirname}${methodsPath.slice(methodsPath.indexOf('/'))}`) ||
-    methodsPath.slice(-5) !== '.json'
-  ) {
+  if (!fs.existsSync(`${methodsPath}`) || methodsPath.slice(-5) !== '.json') {
     console.log(`${methodsPath} is not a valid path`);
     process.exit();
   }
@@ -31,7 +29,7 @@ module.exports.run = async () => {
     process.exit();
   }
 
-  const methods = require(`${__dirname}${methodsPath.slice(methodsPath.indexOf('/'))}`);
+  const methods = require(`${path.resolve(process.cwd(), methodsPath)}`);
 
   const newFile = await new StringPrompt({
     initial: `./${methodsPath.slice(methodsPath.lastIndexOf('/') + 1, -5)}.k6.js`,
@@ -59,7 +57,7 @@ module.exports.run = async () => {
 
   // DETERMINE IF UNIQUE DATA IS NEEDED
   for (let i = 0; i < methods.routes.length; i++) {
-    const { method, path, uniquePayload } = methods.routes[i];
+    const { method, endpoint, uniquePayload } = methods.routes[i];
 
     let uniqueFile;
 
@@ -67,17 +65,15 @@ module.exports.run = async () => {
     if (uniquePayload) {
       uniqueFile = await new StringPrompt({
         initial: './unique/user.json',
-        message: `${method} request to ${path} requires unique payload - provide a path to JSON file containing this data`,
+        message: `${method} request to ${endpoint} requires unique payload - provide a path to JSON file containing this data`,
       }).run();
 
       if (!fs.existsSync(uniqueFile) || uniqueFile.slice(-5) !== '.json') {
         console.log(`${uniqueFile} is not a valid path`);
         process.exit();
       }
-      customImport =
-        uniqueFile.slice(0, 2) !== './'
-          ? `JSON.parse(open('../../../../${uniqueFile}'))`
-          : `JSON.parse(open('../../../../${uniqueFile.slice(2)}'))`;
+
+      customImport = `JSON.parse(open('${path.resolve(process.cwd(), uniqueFile)}'))`;
       const uniqueObj = `${uniqueFile.slice(uniqueFile.lastIndexOf('/') + 1, -5)}`;
 
       customImport = `new SharedArray('${uniqueObj}', function () {
@@ -109,7 +105,7 @@ module.exports.run = async () => {
   for (let i = 0; i < methods.routes.length; i++) {
     const {
       method,
-      path,
+      endpoint,
       custom,
       tag,
       authReq,
@@ -124,10 +120,10 @@ module.exports.run = async () => {
 
     const checkSleep = `check(
           ${tag}Res, {
-            ['${method} - ${path} returns successful status']:  (r) => r.status === 200 || r.status === 204,
-            ['${method} - ${path} returns valid body']: (r) =>
+            ['${method} - ${endpoint} returns successful status']:  (r) => r.status === 200 || r.status === 204,
+            ['${method} - ${endpoint} returns valid body']: (r) =>
             r.status === 204 ? true : r.json().hasOwnProperty('${propertyReturned}'),
-            ['${method} - ${path} returns no error codes']: (r) => r.error_code === 0,
+            ['${method} - ${endpoint} returns no error codes']: (r) => r.error_code === 0,
           },
           { tag: '${tag}' }
           );
@@ -142,18 +138,20 @@ module.exports.run = async () => {
         tagName = '${tag}Res';`;
 
     if (custom) {
-      const prop = path.slice(path.indexOf('$') + 2, path.indexOf('}'));
+      const prop = endpoint.slice(endpoint.indexOf('$') + 2, endpoint.indexOf('}'));
       if (vuObj[prop]) {
-        fullPath = `${baseUrl}${path.slice(0, path.indexOf('$'))}\$\{vuObj['${prop}']\}${path.slice(
-          path.indexOf('}') + 1
-        )}`;
+        fullPath = `${baseUrl}${endpoint.slice(
+          0,
+          endpoint.indexOf('$')
+        )}\$\{vuObj['${prop}']\}${endpoint.slice(endpoint.indexOf('}') + 1)}`;
       } else {
-        fullPath = `${baseUrl}${path.slice(0, path.indexOf('$'))}\$\{vuObj["${prop}"]\}${path.slice(
-          path.indexOf('}') + 1
-        )}`;
+        fullPath = `${baseUrl}${endpoint.slice(
+          0,
+          endpoint.indexOf('$')
+        )}\$\{vuObj["${prop}"]\}${endpoint.slice(endpoint.indexOf('}') + 1)}`;
       }
     } else {
-      fullPath = `${baseUrl}${path}`;
+      fullPath = `${baseUrl}${endpoint}`;
     }
 
     switch (method) {
@@ -203,13 +201,13 @@ module.exports.run = async () => {
             check(
             ${tag}Res,
             {
-              ['${method} - ${path} returns successful status']: (r) =>
+              ['${method} - ${endpoint} returns successful status']: (r) =>
               r.status === 200 || r.status === 204,
-              ['${method} - ${path} returns valid body']: (r) =>
+              ['${method} - ${endpoint} returns valid body']: (r) =>
               r.status !== 204 && ${
                 propertyReturned !== null
               } ? r.json().hasOwnProperty('${propertyReturned}') : JSON.stringify(r.body).includes('${bodyIncludes}'),
-              ['${method} - ${path} returns no error codes']: (r) => r.error_code === 0,
+              ['${method} - ${endpoint} returns no error codes']: (r) => r.error_code === 0,
             },
             { tag: '${tag}' }
             );

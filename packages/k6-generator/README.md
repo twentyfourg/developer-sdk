@@ -55,7 +55,7 @@ Example:
   "routes": [
     {
       "method": "post",
-      "path": "/users",
+      "endpoint": "/users",
       "custom": false,
       "payload": ["email", "firstName", "lastName", "password"],
       "uniquePayload": true,
@@ -66,7 +66,7 @@ Example:
     },
     {
       "method": "post",
-      "path": "/users/auth",
+      "endpoint": "/users/auth",
       "custom": false,
       "payload": ["email", "password"],
       "uniquePayload": false,
@@ -77,7 +77,7 @@ Example:
     },
     {
       "method": "put",
-      "path": "/users/${id}",
+      "endpoint": "/users/${id}",
       "custom": true,
       "payload": ["email", "firstName", "lastName", "password"],
       "uniquePayload": false,
@@ -88,7 +88,7 @@ Example:
     },
     {
       "method": "get",
-      "path": "/users?limit=10&offset=0",
+      "endpoint": "/users?limit=10&offset=0",
       "custom": false,
       "tag": "getAllUsers",
       "authReq": true,
@@ -97,7 +97,7 @@ Example:
     },
     {
       "method": "delete",
-      "path": "/users/${id}",
+      "endpoint": "/users/${id}",
       "custom": true,
       "tag": "deleteUser",
       "authReq": true,
@@ -112,7 +112,7 @@ Example:
 
 - `vuData` object should contain any variables needed in the method path
 - routes should contain the represented data
-  - If the path should be customized with a value from the vuData, mark `custom: true`
+  - If the endpoint should be customized with a value from the vuData, mark `custom: true`
     - ex. `put` request in example JSON file requires an `${id}`
   - Include a property that the results should reliably include (ex. `id`, `token`, etc.)
   - If route does not return an object with properties to check against, include a unique snippet from the body of the response to check for. If there is a property to check, leave `bodyIncludes` as null and vice versa. If the route is a `204 No Content` the script will overlook the 'valid body' check as there should be nothing to check.

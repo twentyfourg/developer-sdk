@@ -15,7 +15,7 @@
   "routes": [
     {
       "method": "post",
-      "path": "/users/auth",
+      "endpoint": "/users/auth",
       "custom": false,
       "payload": ["email", "password"],
       "uniquePayload": false,
@@ -26,7 +26,7 @@
     },
     {
       "method": "get",
-      "path": "/users/${id}/profile",
+      "endpoint": "/users/${id}/profile",
       "custom": true,
       "payload": null,
       "uniquePayload": false,
@@ -37,7 +37,7 @@
     },
     {
       "method": "get",
-      "path": "/users/${id}/connections",
+      "endpoint": "/users/${id}/connections",
       "custom": true,
       "payload": null,
       "uniquePayload": false,
@@ -48,7 +48,7 @@
     },
     {
       "method": "get",
-      "path": "/users/${id}/badges",
+      "endpoint": "/users/${id}/badges",
       "custom": true,
       "payload": null,
       "uniquePayload": false,
@@ -59,7 +59,7 @@
     },
     {
       "method": "get",
-      "path": "/users/classrooms",
+      "endpoint": "/users/classrooms",
       "custom": false,
       "payload": null,
       "uniquePayload": false,
@@ -70,7 +70,7 @@
     },
     {
       "method": "get",
-      "path": "/users/classrooms/link",
+      "endpoint": "/users/classrooms/link",
       "custom": false,
       "payload": null,
       "uniquePayload": false,
@@ -81,7 +81,7 @@
     },
     {
       "method": "get",
-      "path": "/users/notepads",
+      "endpoint": "/users/notepads",
       "custom": false,
       "payload": null,
       "uniquePayload": false,
@@ -92,7 +92,7 @@
     },
     {
       "method": "get",
-      "path": "/challenges/dashboard",
+      "endpoint": "/challenges/dashboard",
       "custom": false,
       "payload": null,
       "uniquePayload": false,
@@ -103,7 +103,7 @@
     },
     {
       "method": "get",
-      "path": "/challenges/${challengeId}",
+      "endpoint": "/challenges/${challengeId}",
       "custom": true,
       "payload": null,
       "uniquePayload": false,
@@ -114,7 +114,7 @@
     },
     {
       "method": "get",
-      "path": "/classrooms",
+      "endpoint": "/classrooms",
       "custom": false,
       "payload": null,
       "uniquePayload": false,
@@ -125,7 +125,7 @@
     },
     {
       "method": "get",
-      "path": "/classrooms/dashboard",
+      "endpoint": "/classrooms/dashboard",
       "custom": false,
       "payload": null,
       "uniquePayload": false,
@@ -136,7 +136,7 @@
     },
     {
       "method": "get",
-      "path": "/classrooms/live-now",
+      "endpoint": "/classrooms/live-now",
       "custom": false,
       "payload": null,
       "uniquePayload": false,
@@ -147,7 +147,7 @@
     },
     {
       "method": "get",
-      "path": "/classrooms/subscribe?token=${calendarSyncToken}",
+      "endpoint": "/classrooms/subscribe?token=${calendarSyncToken}",
       "custom": true,
       "payload": null,
       "uniquePayload": false,
@@ -158,7 +158,7 @@
     },
     {
       "method": "get",
-      "path": "/classrooms/${classroomId}",
+      "endpoint": "/classrooms/${classroomId}",
       "custom": true,
       "payload": null,
       "uniquePayload": false,
@@ -169,7 +169,7 @@
     },
     {
       "method": "get",
-      "path": "/classrooms/${classroomId}/notepad",
+      "endpoint": "/classrooms/${classroomId}/notepad",
       "custom": true,
       "payload": null,
       "uniquePayload": false,
@@ -180,7 +180,7 @@
     },
     {
       "method": "get",
-      "path": "/points/${id}",
+      "endpoint": "/points/${id}",
       "custom": true,
       "payload": null,
       "uniquePayload": false,
@@ -191,7 +191,7 @@
     },
     {
       "method": "get",
-      "path": "/polls",
+      "endpoint": "/polls",
       "custom": false,
       "payload": null,
       "uniquePayload": false,
@@ -202,7 +202,7 @@
     },
     {
       "method": "get",
-      "path": "/polls/${pollId}",
+      "endpoint": "/polls/${pollId}",
       "custom": true,
       "payload": null,
       "uniquePayload": false,
@@ -213,7 +213,7 @@
     },
     {
       "method": "get",
-      "path": "/store",
+      "endpoint": "/store",
       "custom": false,
       "payload": null,
       "uniquePayload": false,
@@ -224,7 +224,7 @@
     },
     {
       "method": "get",
-      "path": "/store/${itemId}",
+      "endpoint": "/store/${itemId}",
       "custom": true,
       "payload": null,
       "uniquePayload": false,
@@ -235,7 +235,7 @@
     },
     {
       "method": "get",
-      "path": "/enums",
+      "endpoint": "/enums",
       "custom": false,
       "payload": null,
       "uniquePayload": false,
@@ -246,7 +246,7 @@
     },
     {
       "method": "get",
-      "path": "/slider",
+      "endpoint": "/slider",
       "custom": false,
       "payload": null,
       "uniquePayload": false,
@@ -257,7 +257,7 @@
     },
     {
       "method": "post",
-      "path": "/users/logout",
+      "endpoint": "/users/logout",
       "custom": false,
       "payload": null,
       "uniquePayload": false,
