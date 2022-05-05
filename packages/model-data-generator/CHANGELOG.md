@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### [1.0.7](https://github.com/twentyfourg/developer-sdk/compare/@twentyfourg-developer-sdk/model-data-generator@1.0.6...@twentyfourg-developer-sdk/model-data-generator@1.0.7) (2022-05-05)
+
+
+### Bug Fixes
+
+* SQL syntax error when modelName is reserved ([#14](https://github.com/twentyfourg/developer-sdk/issues/14)) ([10fd610](https://github.com/twentyfourg/developer-sdk/commit/10fd6108ab8edb596f421656efc102107baed7d6))
+
+
+
 ### [1.0.6](https://github.com/twentyfourg/developer-sdk/compare/@twentyfourg-developer-sdk/model-data-generator@1.0.5...@twentyfourg-developer-sdk/model-data-generator@1.0.6) (2022-04-12)
 
 
