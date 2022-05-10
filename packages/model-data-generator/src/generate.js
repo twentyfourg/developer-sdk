@@ -32,7 +32,11 @@ module.exports = async (modelPath, modelFiles) => {
 
     // populate object with unique values needed
     unique(DTO, uniqueObj, num);
-    const uniqueCopy = JSON.parse(JSON.stringify(uniqueObj));
+    const uniqueCopy = JSON.parse(
+      JSON.stringify(uniqueObj, (key, value) =>
+        typeof value === 'bigint' ? value.toString() : value
+      )
+    );
     uniqueData.push(uniqueCopy);
 
     // before finding by name or type or anything else - check for a REFERENCES value

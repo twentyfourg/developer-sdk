@@ -45,8 +45,8 @@ describe('dummy script', () => {
       });
       it('should have two alpha strings separated by a space', async () => {
         await dummyData.forEach((obj) => {
-          expect(obj.name).toEqual(expect.stringMatching(/^[a-zA-Z]+( [a-zA-Z]+)*$/g));
-          expect(obj.fullName).toEqual(expect.stringMatching(/^[a-zA-Z]+( [a-zA-Z]+)*$/g));
+          expect(obj.name).toEqual(expect.stringMatching(/^[a-zA-Z.]+( [a-zA-Z.']+)*$/g));
+          expect(obj.fullName).toEqual(expect.stringMatching(/^[a-zA-Z.]+( [a-zA-Z.']+)*$/g));
         });
       });
     });
@@ -110,7 +110,7 @@ describe('dummy script', () => {
       });
       it('matches address pattern', async () => {
         await dummyData.forEach((obj) => {
-          expect(obj.addressOne).toEqual(expect.stringMatching(/^[ a-zA-Z0-9]+$/g));
+          expect(obj.addressOne).toEqual(expect.stringMatching(/^[' a-zA-Z0-9]+$/g));
         });
       });
     });
@@ -122,7 +122,7 @@ describe('dummy script', () => {
       });
       it('matches city pattern', async () => {
         await dummyData.forEach((obj) => {
-          expect(obj.city).toEqual(expect.stringMatching(/^[A-Z]+[a-z]+$/g));
+          expect(obj.city).toEqual(expect.stringMatching(/[A-Za-z ]/g));
         });
       });
     });
@@ -173,8 +173,8 @@ describe('dummy script', () => {
       });
       it('matches phone pattern', async () => {
         await dummyData.forEach((obj) => {
-          expect(obj.phone).toEqual(expect.stringMatching(/^[0-9]+$/g));
-          expect(obj.phone).toHaveLength(10);
+          expect(obj.phone).toEqual(expect.stringMatching(/[-x0-9]+/g));
+          expect(obj.phone).toHaveLength(12);
         });
       });
     });

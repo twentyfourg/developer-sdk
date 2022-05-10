@@ -1,8 +1,7 @@
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable no-bitwise */
-const Chance = require('chance');
+const { faker } = require('@faker-js/faker');
 
-const chance = new Chance();
 const randomEven = require('./util/randomEven');
 
 // if any value is blank, attempt to create a value based on type
@@ -20,9 +19,9 @@ const randomByType = (modelObj, DTO) => {
           if (DTO[key].hasOwnProperty('allowNull') && DTO[key].allowNull) {
             if (randomEven()) {
               if (Object.keys(DTO[`${key}`]).includes('length')) {
-                modelObj[key] = chance.string({ length: DTO[`${key}`].length });
+                modelObj[key] = faker.datatype.string(DTO[`${key}`].length);
               } else {
-                modelObj[key] = chance.string();
+                modelObj[key] = faker.datatype.string();
               }
             } else {
               modelObj[key] = null;
@@ -31,9 +30,9 @@ const randomByType = (modelObj, DTO) => {
             !DTO[key].hasOwnProperty('allowNull') &&
             Object.keys(DTO[`${key}`]).includes('length')
           ) {
-            modelObj[key] = chance.string({ length: DTO[`${key}`].length });
+            modelObj[key] = faker.datatype.string(DTO[`${key}`].length);
           } else {
-            modelObj[key] = chance.string();
+            modelObj[key] = faker.datatype.string();
           }
           break;
         case 'text':
@@ -41,16 +40,16 @@ const randomByType = (modelObj, DTO) => {
             if (randomEven()) {
               if (Object.keys(DTO[`${key}`]).includes('length')) {
                 if (DTO[`${key}`].length.toLowerCase() === 'tiny') {
-                  modelObj[key] = chance.paragraph({ sentences: 1 });
+                  modelObj[key] = faker.lorem.sentences(2);
                 } else if (DTO[`${key}`].length.toLowerCase() === 'medium') {
-                  modelObj[key] = chance.paragraph({ sentences: 6 });
+                  modelObj[key] = faker.lorem.sentences(8);
                 } else if (DTO[`${key}`].length.toLowerCase() === 'long') {
-                  modelObj[key] = chance.paragraph({ sentences: 12 });
+                  modelObj[key] = faker.lorem.sentences(16);
                 } else {
                   console.log(`Could not parse length constraint for ${key}`);
                 }
               } else {
-                modelObj[key] = chance.paragraph({ sentences: 3 });
+                modelObj[key] = faker.lorem.sentences(3);
               }
             } else {
               modelObj[key] = null;
@@ -60,16 +59,16 @@ const randomByType = (modelObj, DTO) => {
             Object.keys(DTO[`${key}`]).includes('length')
           ) {
             if (DTO[`${key}`].length.toLowerCase() === 'tiny') {
-              modelObj[key] = chance.paragraph({ sentences: 1 });
+              modelObj[key] = faker.lorem.sentences(2);
             } else if (DTO[`${key}`].length.toLowerCase() === 'medium') {
-              modelObj[key] = chance.paragraph({ sentences: 6 });
+              modelObj[key] = faker.lorem.sentences(8);
             } else if (DTO[`${key}`].length.toLowerCase() === 'long') {
-              modelObj[key] = chance.paragraph({ sentences: 12 });
+              modelObj[key] = faker.lorem.sentences(16);
             } else {
               console.log(`Could not parse length constraint for ${key}`);
             }
           } else {
-            modelObj[key] = chance.paragraph({ sentences: 3 });
+            modelObj[key] = faker.lorem.sentences(3);
           }
           break;
         case 'boolean':
@@ -86,56 +85,56 @@ const randomByType = (modelObj, DTO) => {
         case 'integer':
           if (DTO[key].hasOwnProperty('allowNull') && DTO[key].allowNull) {
             if (randomEven()) {
-              modelObj[key] = chance.integer({ min: -2147483648, max: 2147483647 });
+              modelObj[key] = faker.datatype.number({ min: -2147483648, max: 2147483647 });
             } else {
               modelObj[key] = null;
             }
           } else {
-            modelObj[key] = chance.integer({ min: -2147483648, max: 2147483647 });
+            modelObj[key] = faker.datatype.number({ min: -2147483648, max: 2147483647 });
           }
           break;
         case 'bigint':
           if (DTO[key].hasOwnProperty('allowNull') && DTO[key].allowNull) {
             if (randomEven()) {
-              modelObj[key] = chance.integer({ min: -2 ^ 63, max: (2 ^ 63) - 1 });
+              modelObj[key] = faker.datatype.bigInt();
             } else {
               modelObj[key] = null;
             }
           } else {
-            modelObj[key] = chance.integer({ min: -2 ^ 63, max: (2 ^ 63) - 1 });
+            modelObj[key] = faker.datatype.bigInt();
           }
           break;
         case 'mediumint':
           if (DTO[key].hasOwnProperty('allowNull') && DTO[key].allowNull) {
             if (randomEven()) {
-              modelObj[key] = chance.integer({ min: -8388608, max: 8388608 });
+              modelObj[key] = faker.datatype.number({ min: -8388608, max: 8388608 });
             } else {
               modelObj[key] = null;
             }
           } else {
-            modelObj[key] = chance.integer({ min: -8388608, max: 8388608 });
+            modelObj[key] = faker.datatype.number({ min: -8388608, max: 8388608 });
           }
           break;
         case 'smallint':
           if (DTO[key].hasOwnProperty('allowNull') && DTO[key].allowNull) {
             if (randomEven()) {
-              modelObj[key] = chance.integer({ min: -32768, max: 32767 });
+              modelObj[key] = faker.datatype.number({ min: -32768, max: 32767 });
             } else {
               modelObj[key] = null;
             }
           } else {
-            modelObj[key] = chance.integer({ min: -32768, max: 32767 });
+            modelObj[key] = faker.datatype.number({ min: -32768, max: 32767 });
           }
           break;
         case 'tinyint':
           if (DTO[key].hasOwnProperty('allowNull') && DTO[key].allowNull) {
             if (randomEven()) {
-              modelObj[key] = chance.integer({ min: -128, max: 127 });
+              modelObj[key] = faker.datatype.number({ min: -128, max: 127 });
             } else {
               modelObj[key] = null;
             }
           } else {
-            modelObj[key] = chance.integer({ min: -128, max: 127 });
+            modelObj[key] = faker.datatype.number({ min: -128, max: 127 });
           }
           break;
         case 'float':
@@ -144,23 +143,23 @@ const randomByType = (modelObj, DTO) => {
         case 'real':
           if (DTO[key].hasOwnProperty('allowNull') && DTO[key].allowNull) {
             if (randomEven()) {
-              modelObj[key] = chance.floating();
+              modelObj[key] = faker.datatype.float();
             } else {
               modelObj[key] = null;
             }
           } else {
-            modelObj[key] = chance.floating();
+            modelObj[key] = faker.datatype.float();
           }
           break;
         case 'now':
           if (DTO[key].hasOwnProperty('allowNull') && DTO[key].allowNull) {
             if (randomEven()) {
-              modelObj[key] = chance.timestamp();
+              modelObj[key] = faker.datatype.datetime();
             } else {
               modelObj[key] = null;
             }
           } else {
-            modelObj[key] = chance.timestamp();
+            modelObj[key] = faker.datatype.datetime();
           }
           break;
         default:

@@ -1,9 +1,7 @@
 /* eslint-disable no-bitwise */
 /* eslint-disable no-prototype-builtins */
+const { faker } = require('@faker-js/faker');
 const { nanoid } = require('nanoid');
-const Chance = require('chance');
-
-const chance = new Chance();
 
 const unique = (DTO, uniqueObj, howMany) => {
   Object.entries(DTO).forEach((key) => {
@@ -23,80 +21,91 @@ const unique = (DTO, uniqueObj, howMany) => {
           uniqueObj[fieldName].push(`${nanoid(5)}@24g.com`);
         }
       }
-      // try by name
-      if (uniqueObj[fieldName].length === 0) {
-        try {
-          const randomData = chance[key[0]];
-          uniqueObj[fieldName] = chance.unique(randomData, howMany * 2);
-        } catch (err) {
-          console.warn(
-            `Cannot match ${key[0]} by name to spawn unique data. Attempting match by type.`
-          );
-        }
-      }
-      // try by type
+
+      // type
       if (uniqueObj[fieldName].length === 0) {
         let strLength = 12;
         let textLength = 3;
+        const uniqueStrChar = [];
+        const uniqueText = [];
+        const uniqueInt = [];
+        const uniqueBigInt = [];
+        const uniqueMedInt = [];
+        const uniqueSmallInt = [];
+        const uniqueTinyInt = [];
+        const uniqueFloat = [];
+
         switch (key[1].type.key.toLowerCase()) {
           case 'string':
           case 'char':
             if (Object.keys(key[1]).includes('length')) {
               strLength = key[1].length;
             }
-            uniqueObj[fieldName] = chance.unique(chance.string, howMany * 2, { length: strLength });
+            for (let i = 0; i <= howMany * 2; i++) {
+              uniqueStrChar.push(faker.unique(faker.datatype.string, { length: strLength }));
+            }
+            uniqueObj[fieldName] = uniqueStrChar;
             break;
           case 'text':
             if (Object.keys(key[1]).includes('length')) {
               if (key[1].length === 'tiny') {
-                textLength = 1;
+                textLength = 2;
               } else if (key[1].length === 'medium') {
-                textLength = 6;
+                textLength = 8;
               } else if (key[1].length === 'long') {
-                textLength = 12;
+                textLength = 16;
               } else {
                 console.log('Could not match constraint.');
               }
             }
-            uniqueObj[fieldName] = chance.unique(chance.paragraph, howMany * 2, {
-              sentences: textLength,
-            });
+
+            for (let i = 0; i <= howMany * 2; i++) {
+              uniqueText.push(faker.unique(faker.lorem.sentences, { length: textLength }));
+            }
+            uniqueObj[fieldName] = uniqueText;
             break;
           case 'integer':
-            uniqueObj[fieldName] = chance.unique(chance.integer, howMany * 2, {
-              min: -2147483648,
-              max: 2147483647,
-            });
+            for (let i = 0; i <= howMany * 2; i++) {
+              uniqueInt.push(
+                faker.unique(faker.datatype.number, { min: -2147483648, max: 2147483647 })
+              );
+            }
+            uniqueObj[fieldName] = uniqueInt;
             break;
           case 'bigint':
-            uniqueObj[fieldName] = chance.unique(chance.integer, howMany * 2, {
-              min: -2 ^ 63,
-              max: (2 ^ 63) - 1,
-            });
+            for (let i = 0; i <= howMany * 2; i++) {
+              uniqueBigInt.push(faker.unique(faker.datatype.bigInt));
+            }
+            uniqueObj[fieldName] = uniqueBigInt;
             break;
           case 'mediumint':
-            uniqueObj[fieldName] = chance.unique(chance.integer, howMany * 2, {
-              min: -8388608,
-              max: 8388608,
-            });
+            for (let i = 0; i <= howMany * 2; i++) {
+              uniqueMedInt.push(
+                faker.unique(faker.datatype.number, { min: -8388608, max: 8388608 })
+              );
+            }
+            uniqueObj[fieldName] = uniqueMedInt;
             break;
           case 'smallint':
-            uniqueObj[fieldName] = chance.unique(chance.integer, howMany * 2, {
-              min: -32768,
-              max: 32767,
-            });
+            for (let i = 0; i <= howMany * 2; i++) {
+              uniqueSmallInt.push(faker.unique(faker.datatype.number, { min: -32768, max: 32767 }));
+            }
+            uniqueObj[fieldName] = uniqueSmallInt;
             break;
           case 'tinyint':
-            uniqueObj[fieldName] = chance.unique(chance.integer, howMany * 2, {
-              min: -128,
-              max: 127,
-            });
+            for (let i = 0; i <= howMany * 2; i++) {
+              uniqueTinyInt.push(faker.unique(faker.datatype.number, { min: -128, max: 127 }));
+            }
+            uniqueObj[fieldName] = uniqueTinyInt;
             break;
           case 'float':
           case 'decimal':
           case 'double precision':
           case 'real':
-            uniqueObj[fieldName] = chance.unique(chance.floating, howMany * 2);
+            for (let i = 0; i <= howMany * 2; i++) {
+              uniqueFloat.push(faker.unique(faker.datatype.float));
+            }
+            uniqueObj[fieldName] = uniqueFloat;
             break;
           default:
             console.log(
