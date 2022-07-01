@@ -6,7 +6,7 @@ describe('dummy script', () => {
   let dummyObj;
   beforeAll(async () => {
     dummyData = await dummyScript('./src/db/models', [
-      { model: 'test.model.js', howMany: 10, dryRun: true, createFile: false },
+      { model: 'test.model.js', howMany: 2, dryRun: true, createFile: false },
     ]);
     dummyObj = dummyData.insertedData[0].test;
     [dummyUnique] = dummyData.uniqueData;

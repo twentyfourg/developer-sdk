@@ -76,9 +76,9 @@ describe('dummy script', () => {
       it('respects length constraint', async () => {
         dummyData.forEach((obj) => {
           expect(obj.randomText).toHaveSentenceCount(3);
-          expect(obj.randomTextTiny).toHaveSentenceCount(1);
-          expect(obj.randomTextMedium).toHaveSentenceCount(6);
-          expect(obj.randomTextLong).toHaveSentenceCount(12);
+          expect(obj.randomTextTiny).toHaveSentenceCount(2);
+          expect(obj.randomTextMedium).toHaveSentenceCount(8);
+          expect(obj.randomTextLong).toHaveSentenceCount(16);
         });
       });
     });
@@ -120,11 +120,6 @@ describe('dummy script', () => {
       it('contains only numeric char or -', async () => {
         dummyData.forEach((obj) => {
           expect(String(obj.randomBigInt)).toMatch(/^[-]|[0-9]/g);
-        });
-      });
-      it('is in proper range', async () => {
-        dummyData.forEach((obj) => {
-          expect(obj.randomBigInt).toBeWithinRange(-2 ^ 63, (2 ^ 63) - 1); // eslint-disable-line
         });
       });
     });
@@ -205,7 +200,7 @@ describe('dummy script', () => {
       });
       it('contains only numeric char', async () => {
         dummyData.forEach((obj) => {
-          expect(String(obj.randomNow)).toMatch(/^[0-9]/g);
+          expect(String(obj.randomNow)).toMatch(/([0-9-TZ:.])+/g);
         });
       });
     });

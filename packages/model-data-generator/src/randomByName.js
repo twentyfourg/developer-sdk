@@ -1,8 +1,7 @@
-const Chance = require('chance');
+const { faker } = require('@faker-js/faker');
 const bcrypt = require('bcrypt');
 const { nanoid } = require('nanoid');
 
-const chance = new Chance();
 const randomEven = require('./util/randomEven');
 const randomByType = require('./randomByType');
 
@@ -31,10 +30,10 @@ const randomByName = async (modelObj, DTO, uniqueObj) => {
           if (randomEven()) {
             modelObj[current] = '';
           } else {
-            modelObj[current] = chance.url();
+            modelObj[current] = faker.internet.url();
           }
         } else {
-          modelObj[current] = chance.url();
+          modelObj[current] = faker.internet.url();
         }
       } else if (current.toLowerCase().includes('email')) {
         if (Object.keys(DTO[current]) && DTO[current].allowNull) {
@@ -54,10 +53,10 @@ const randomByName = async (modelObj, DTO, uniqueObj) => {
               if (randomEven()) {
                 modelObj[current] = '';
               } else {
-                modelObj[current] = chance.first();
+                modelObj[current] = faker.name.firstName();
               }
             } else {
-              modelObj[current] = chance.first();
+              modelObj[current] = faker.name.firstName();
             }
             break;
           case 'lastname':
@@ -65,10 +64,10 @@ const randomByName = async (modelObj, DTO, uniqueObj) => {
               if (randomEven()) {
                 modelObj[current] = '';
               } else {
-                modelObj[current] = chance.last();
+                modelObj[current] = faker.name.lastName();
               }
             } else {
-              modelObj[current] = chance.last();
+              modelObj[current] = faker.name.lastName();
             }
             break;
           case 'name':
@@ -77,10 +76,10 @@ const randomByName = async (modelObj, DTO, uniqueObj) => {
               if (randomEven()) {
                 modelObj[current] = '';
               } else {
-                modelObj[current] = chance.name();
+                modelObj[current] = faker.name.findName();
               }
             } else {
-              modelObj[current] = chance.name();
+              modelObj[current] = faker.name.findName();
             }
             break;
           case 'email':
@@ -105,10 +104,10 @@ const randomByName = async (modelObj, DTO, uniqueObj) => {
               if (randomEven()) {
                 modelObj[current] = '';
               } else {
-                modelObj[current] = chance.sentence();
+                modelObj[current] = faker.lorem.sentence();
               }
             } else {
-              modelObj[current] = chance.sentence();
+              modelObj[current] = faker.lorem.sentence();
             }
             break;
           case 'timezone':
@@ -116,12 +115,10 @@ const randomByName = async (modelObj, DTO, uniqueObj) => {
               if (randomEven()) {
                 modelObj[current] = '';
               } else {
-                const randomTimeZone = chance.timezone();
-                modelObj[current] = randomTimeZone.utc.shift() || randomTimeZone.name;
+                modelObj[current] = faker.address.timeZone();
               }
             } else {
-              const randomTimeZone = chance.timezone();
-              modelObj[current] = randomTimeZone.utc.shift() || randomTimeZone.name;
+              modelObj[current] = faker.address.timeZone();
             }
             break;
           case 'addressone':
@@ -129,10 +126,10 @@ const randomByName = async (modelObj, DTO, uniqueObj) => {
               if (randomEven()) {
                 modelObj[current] = '';
               } else {
-                modelObj[current] = chance.address();
+                modelObj[current] = faker.address.streetAddress();
               }
             } else {
-              modelObj[current] = chance.address();
+              modelObj[current] = faker.address.streetAddress();
             }
             break;
           case 'city':
@@ -140,10 +137,10 @@ const randomByName = async (modelObj, DTO, uniqueObj) => {
               if (randomEven()) {
                 modelObj[current] = '';
               } else {
-                modelObj[current] = chance.city();
+                modelObj[current] = faker.address.city();
               }
             } else {
-              modelObj[current] = chance.city();
+              modelObj[current] = faker.address.city();
             }
             break;
           case 'state':
@@ -151,10 +148,10 @@ const randomByName = async (modelObj, DTO, uniqueObj) => {
               if (randomEven()) {
                 modelObj[current] = '';
               } else {
-                modelObj[current] = chance.state();
+                modelObj[current] = faker.address.stateAbbr();
               }
             } else {
-              modelObj[current] = chance.state();
+              modelObj[current] = faker.address.stateAbbr();
             }
             break;
           case 'country':
@@ -162,10 +159,10 @@ const randomByName = async (modelObj, DTO, uniqueObj) => {
               if (randomEven()) {
                 modelObj[current] = '';
               } else {
-                modelObj[current] = chance.country();
+                modelObj[current] = faker.address.country();
               }
             } else {
-              modelObj[current] = chance.country();
+              modelObj[current] = faker.address.country();
             }
             break;
           case 'zip':
@@ -173,10 +170,10 @@ const randomByName = async (modelObj, DTO, uniqueObj) => {
               if (randomEven()) {
                 modelObj[current] = '';
               } else {
-                modelObj[current] = chance.zip();
+                modelObj[current] = faker.address.zipCode('#####');
               }
             } else {
-              modelObj[current] = chance.zip();
+              modelObj[current] = faker.address.zipCode('#####');
             }
             break;
           case 'phone':
@@ -184,10 +181,10 @@ const randomByName = async (modelObj, DTO, uniqueObj) => {
               if (randomEven()) {
                 modelObj[current] = '';
               } else {
-                modelObj[current] = chance.phone({ formatted: false });
+                modelObj[current] = faker.phone.phoneNumber('###-###-####');
               }
             } else {
-              modelObj[current] = chance.phone({ formatted: false });
+              modelObj[current] = faker.phone.phoneNumber('###-###-####');
             }
             break;
           // if no match, column created with null value

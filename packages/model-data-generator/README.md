@@ -36,10 +36,7 @@ npx @twentyfourg-developer-sdk/model-data-generator
 
   - allowNull
   - unique
-    - For names:
-      - All names that exactly match the `chance` naming convention
-        - 'email', 'city', etc.
-    - For types:
+    - Types:
       - 'string', 'char'
         - supports length constraint (integer)
       - 'text'
