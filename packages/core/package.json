@@ -15,6 +15,6 @@
   },
   "dependencies": {
     "@twentyfourg-developer-sdk/is-common-password": "^1.0.1",
-    "dotenv": "^16.0.0"
+    "dotenv": "^16.2.0"
   }
 }
