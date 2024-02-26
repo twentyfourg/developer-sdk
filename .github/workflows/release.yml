@@ -15,7 +15,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 16
+          node-version: 18
       - name: Authenticate with NPM
         run: |
           echo "@twentyfourg-developer-sdk:registry=https://registry.npmjs.org" > .npmrc
@@ -35,4 +35,3 @@ jobs:
           npm install --no-save conventional-changelog-conventionalcommits
           npx lerna version --conventional-commits --conventional-graduate --create-release github --yes
           lerna publish from-git --yes
-          
