@@ -12,6 +12,7 @@ const log = console;
 
 class Prompt {
   constructor() {
+    this.currentVersion = '';
     this.packageName = 'lxp-base';
     this.continuePagination = false;
     this.matches = [];
@@ -25,8 +26,38 @@ class Prompt {
     else if (!process.env.LXP_PACKAGE_HELPER_URL)
       throw new Error('LXP_PACKAGE_HELPER_URL is required');
 
+    const packageJsonPath = `${process.cwd()}/package.json`;
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+    const packageVersion = packageJson.dependencies[this.packageName] || '';
+    const matches = packageVersion.match(new RegExp(`${this.packageName}-([\\d.]+?)(?=\\.tgz)`));
+    if (matches) {
+      // eslint-disable-next-line prefer-destructuring
+      this.currentVersion = `v${matches[1]}`;
+      log.info(chalk.bold(`${chalk.green.bold('✔')} Current version: v${matches[1]}`));
+    } else {
+      log.info(`${chalk.red.bold('✖')} ${chalk.bold('Current version: N/A')}`);
+    }
+
     const version = await this.promptVersion();
     this.matches = (await this.fetchAllReleases()).filter((obj) => obj.name.includes(version));
+    this.matches.sort((a, b) => {
+      // Split version numbers into parts and convert them to integers
+      const partsA = a.tag_name.slice(1).split('.').map(Number);
+      const partsB = b.tag_name.slice(1).split('.').map(Number);
+
+      // Compare version number parts
+      for (let i = 0; i < Math.max(partsA.length, partsB.length); i++) {
+        if ((partsA[i] || 0) > (partsB[i] || 0)) return -1;
+        if ((partsA[i] || 0) < (partsB[i] || 0)) return 1;
+      }
+
+      // If tag_name is identical, compare published_at
+      if (a.published_at > b.published_at) return -1;
+      if (a.published_at < b.published_at) return 1;
+
+      return 0;
+    });
+
     await this.selectVersion();
     await this.downloadPackage();
 
@@ -93,8 +124,7 @@ class Prompt {
 
   updatePackageJsonDependency() {
     const packageJsonPath = `${process.cwd()}/package.json`;
-    const packageJsonText = fs.readFileSync(packageJsonPath, 'utf8');
-    const packageJson = JSON.parse(packageJsonText);
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
     packageJson.dependencies[this.packageName] = `file:${this.selection.package.name}`;
     fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
 
@@ -143,9 +173,13 @@ class Prompt {
       type: 'select',
       name: 'version',
       message: 'Select a version',
-      choices: this.matches.slice(0, 10).map((obj) => ({
+      choices: this.matches.slice(0, 15).map((obj) => ({
         name: obj.tag_name,
-        message: obj.tag_name + chalk.gray(` @ ${formatDateTime(obj.published_at)}`),
+        message:
+          (obj.tag_name === this.currentVersion ? `${chalk.cyan(obj.tag_name)}` : obj.tag_name) +
+          chalk.gray(
+            `: ${formatDateTime.ago(obj.published_at)} @ ${formatDateTime.format(obj.published_at)}`
+          ),
       })),
     });
     this.selection = this.matches.find((obj) => obj.tag_name === version);
@@ -204,14 +238,15 @@ class Prompt {
             : null,
         };
       })
-      .filter((release) => release.package);
+      .filter((release) => release.package)
+      .sort((a, b) => b.tag_name - a.tag_name);
   }
 
   async promptVersion() {
     const { version } = await prompt({
       type: 'input',
       name: 'version',
-      message: 'Package version',
+      message: 'Search for package version',
     });
     if (!version) {
       log.warn(`${chalk.red.bold('✖')} ${chalk.bold('Version is required')}`);

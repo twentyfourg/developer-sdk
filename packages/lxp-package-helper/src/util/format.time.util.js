@@ -1,20 +1,28 @@
-export default (dateString) => {
-  const date = new Date(dateString);
+import { parseISO, formatDistanceToNow } from 'date-fns';
 
-  const pad = (num) => (num < 10 ? `0${num}` : num);
+export default {
+  format: (dateString) => {
+    const date = new Date(dateString);
 
-  const year = date.getFullYear();
-  const month = pad(date.getMonth() + 1); // getMonth() is zero-indexed
-  const day = pad(date.getDate());
-  let hours = date.getHours();
-  const minutes = pad(date.getMinutes());
-  const seconds = pad(date.getSeconds());
-  const ampm = hours >= 12 ? 'PM' : 'AM';
+    const pad = (num) => (num < 10 ? `0${num}` : num);
 
-  // Convert hours to 12-hour format
-  hours %= 12;
-  hours = hours ? pad(hours) : '12'; // the hour '0' should be '12'
+    const year = date.getFullYear().toString().slice(-2);
+    const month = pad(date.getMonth() + 1); // getMonth() is zero-indexed
+    const day = pad(date.getDate());
+    let hours = date.getHours();
+    const minutes = pad(date.getMinutes());
+    const seconds = pad(date.getSeconds());
+    const ampm = hours >= 12 ? 'PM' : 'AM';
 
-  // Format date and time
-  return `${month}/${day}/${year} ${hours}:${minutes}:${seconds} ${ampm}`;
+    // Convert hours to 12-hour format
+    hours %= 12;
+    hours = hours ? pad(hours) : '12'; // the hour '0' should be '12'
+
+    // Format date and time
+    return `${month}/${day}/${year} ${hours}:${minutes}:${seconds} ${ampm}`;
+  },
+  ago: (ISO) => {
+    const date = parseISO(ISO);
+    return formatDistanceToNow(date, { addSuffix: true, includeSeconds: true });
+  },
 };
