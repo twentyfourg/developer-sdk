@@ -13,6 +13,15 @@ const log = console;
 class Prompt {
   constructor() {
     this.currentVersion = '';
+    this.repos = [
+      '2873-13-vw-cup-lxp-api',
+      '2693-7-porsche-lxp-api',
+      '2970-1-ev-academy-lxp-api',
+      '3004-1-gm-ev-academy-lxp-api',
+    ];
+    this.clone = './.developer-sdk-cloned-repo';
+    this.repo = null;
+    this.branch = null;
     this.packageName = 'lxp-base';
     this.continuePagination = false;
     this.matches = [];
@@ -20,11 +29,30 @@ class Prompt {
     this.selection = null;
   }
 
+  async cloneRepo() {
+    const repoUrl = `https://github.com/twentyfourg/${this.repo}.git`;
+    if (fs.existsSync(this.clone)) {
+      log.info(`${chalk.bold.cyan('⚙')} ${chalk.bold('Deleting existing clone')}`);
+      fs.rmSync(this.clone, { recursive: true });
+      log.info(`${chalk.green.bold('✔')} ${chalk.bold('Deleted existing clone')}`);
+    }
+    log.info(`${chalk.bold.cyan('⚙')} ${chalk.bold('Cloning repository')}`);
+    execSync(`git clone --branch ${this.branch} ${repoUrl} ${this.clone}`, {
+      stdio: 'pipe',
+    });
+    log.info(`${chalk.green.bold('✔')} ${chalk.bold('Cloned repository')}`);
+    process.chdir(this.clone);
+  }
+
   async start() {
     if (!process.env.LXP_PACKAGE_HELPER_GITHUB_TOKEN)
       throw new Error('LXP_PACKAGE_HELPER_GITHUB_TOKEN is required');
     else if (!process.env.LXP_PACKAGE_HELPER_URL)
       throw new Error('LXP_PACKAGE_HELPER_URL is required');
+
+    await this.selectRepo();
+    await this.selectBranch();
+    await this.cloneRepo();
 
     const packageJsonPath = `${process.cwd()}/package.json`;
     const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
@@ -60,23 +88,24 @@ class Prompt {
 
     await this.selectVersion();
     await this.downloadPackage();
-
-    const { value: options } = await prompt({
-      type: 'multiselect',
-      name: 'value',
-      message: 'Package options?',
-      limit: 4,
-      initial: ['update', 'install', 'delete', 'commit'],
-      choices: [
-        {
-          name: 'update',
-          message: `Update ${this.packageName} in package.json to ${this.selection.package.name}?`,
-        },
-        { name: 'install', message: `Install ${this.packageName} to update package-lock.json?` },
-        { name: 'delete', message: 'Delete old packages?' },
-        { name: 'commit', message: 'Stage and commit files' },
-      ],
-    });
+    const options = ['update', 'install', 'delete', 'commit', 'push'];
+    // const { value: options } = await prompt({
+    //   type: 'multiselect',
+    //   name: 'value',
+    //   message: 'Package options?',
+    //   limit: 5,
+    //   initial: ['update', 'install', 'delete', 'commit', 'push'],
+    //   choices: [
+    //     {
+    //       name: 'update',
+    //       message: `Update ${this.packageName} in package.json to ${this.selection.name}?`,
+    //     },
+    //     { name: 'install', message: `Install ${this.packageName} to update package-lock.json?` },
+    //     { name: 'delete', message: 'Delete old packages?' },
+    //     { name: 'commit', message: 'Stage and commit files' },
+    //     { name: 'push', message: 'Push commit to origin' },
+    //   ],
+    // });
 
     if (options.includes('update')) {
       this.updatePackageJsonDependency();
@@ -84,6 +113,13 @@ class Prompt {
       if (options.includes('install')) this.npmInstall();
       if (options.includes('delete')) this.deleteOldPackages();
       if (options.includes('commit')) this.commitFiles();
+      if (options.includes('push')) Prompt.pushFiles();
+    }
+    process.chdir('..');
+    if (fs.existsSync(this.clone)) {
+      log.info(`${chalk.bold.cyan('⚙')} ${chalk.bold('Deleting clone')}`);
+      fs.rmSync(this.clone, { recursive: true });
+      log.info(`${chalk.green.bold('✔')} ${chalk.bold('Deleted clone')}`);
     }
   }
 
@@ -96,13 +132,16 @@ class Prompt {
         stdio: 'pipe',
       }
     );
-    execSync(
-      `git commit -m "build: update ${this.packageName} to ${this.selection.package.name}"`,
-      {
-        stdio: 'pipe',
-      }
-    );
+    execSync(`git commit -m "build: update ${this.packageName} to ${this.selection.name}"`, {
+      stdio: 'pipe',
+    });
     log.info(`${chalk.green.bold('✔')} ${chalk.bold('Staged and committed files')}`);
+  }
+
+  static pushFiles() {
+    log.info(`${chalk.bold.cyan('⚙')} ${chalk.bold('Pushing commit to origin')}`);
+    execSync('git push origin HEAD', { stdio: 'pipe' });
+    log.info(`${chalk.green.bold('✔')} ${chalk.bold('Pushed commit to origin')}`);
   }
 
   deleteOldPackages() {
@@ -183,6 +222,29 @@ class Prompt {
       })),
     });
     this.selection = this.matches.find((obj) => obj.tag_name === version);
+  }
+
+  async selectRepo() {
+    const { repo } = await prompt({
+      type: 'select',
+      name: 'repo',
+      message: 'Select a repository',
+      choices: this.repos,
+    });
+    this.repo = repo;
+  }
+
+  async selectBranch() {
+    const { branch } = await prompt({
+      type: 'input',
+      name: 'branch',
+      message: 'Branch to clone and update',
+    });
+    if (!branch) {
+      log.warn(`${chalk.red.bold('✖')} ${chalk.bold('Branch is required')}`);
+      return this.selectBranch();
+    }
+    this.branch = branch;
   }
 
   static parseLinkHeader(header) {
