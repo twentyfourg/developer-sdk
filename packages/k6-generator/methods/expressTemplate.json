@@ -1,0 +1,64 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "vuData": {
+    "email": "test@24g.com",
+    "password": "24GP@ssword368",
+    "firstName": "Alpha",
+    "lastName": "Test",
+    "id": "2018f80c-aa83-4d3b-94b0-e872df158cf3"
+  },
+  "routes": [
+    {
+      "method": "post",
+      "endpoint": "/users",
+      "custom": false,
+      "payload": ["email", "firstName", "lastName", "password"],
+      "uniquePayload": true,
+      "tag": "createUser",
+      "authReq": false,
+      "propertyReturned": "id",
+      "bodyIncludes": null
+    },
+    {
+      "method": "post",
+      "endpoint": "/users/auth",
+      "custom": false,
+      "payload": ["email", "password"],
+      "uniquePayload": false,
+      "tag": "userLogin",
+      "authReq": false,
+      "propertyReturned": "token",
+      "bodyIncludes": null
+    },
+    {
+      "method": "put",
+      "endpoint": "/users/${id}",
+      "custom": true,
+      "payload": ["email", "firstName", "lastName", "password"],
+      "uniquePayload": false,
+      "tag": "editUser",
+      "authReq": true,
+      "propertyReturned": "",
+      "bodyIncludes": null
+    },
+    {
+      "method": "get",
+      "endpoint": "/users?limit=10&offset=0",
+      "custom": false,
+      "tag": "getAllUsers",
+      "authReq": true,
+      "propertyReturned": "users",
+      "bodyIncludes": null
+    },
+    {
+      "method": "delete",
+      "endpoint": "/users/${id}",
+      "custom": true,
+      "tag": "deleteUser",
+      "authReq": true,
+      "propertyReturned": "",
+      "bodyIncludes": null,
+      "setNull": ["id", "token"]
+    }
+  ]
+}
